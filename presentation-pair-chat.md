@@ -21,58 +21,98 @@ The question isn't "Does Pair Chat work?" It's **"How do we capture the value we
 
 ---
 
-## 2. CONTEXT: Understanding Pair Chat (1 minute)
+## 2. THE CORE PROBLEM: 47% Activation Gap (30 seconds)
 
-[SPEAKER NOTE: Establish product fluency. Weave metrics into narrative, don't list them.]
+[SPEAKER NOTE: State the problem upfront. This is THE issue we're solving.]
+
+**149,000 registered users. Only 78,517 active.**
+
+That's a **47% activation gap**—70,000 officers signed up but never activated. They're not churned users who tried and left. They're people who registered and never started.
+
+**This represents $8.7M in untapped monthly productivity value.**
+
+The question isn't "Does Pair Chat work?" (It does—832,280 hours saved monthly, 4.2/5 satisfaction, 20,000 user-created AIBots.)
+
+The question is: **Why did 70,000 people sign up but never activate?**
+
+---
+
+## 3. CONTEXT: Understanding Pair Chat (1 minute)
+
+[SPEAKER NOTE: Establish product fluency. Keep this brief—we've already stated the problem.]
 
 Pair Chat is Singapore's government-specific AI assistant—think ChatGPT, but **cleared for RESTRICTED/SENSITIVE NORMAL data** and **zero-cost** to all 150,000 public officers.
 
-**The numbers tell a compelling story:**
-
-- **78,517 monthly active users** (70% of public service)
-- **832,280 hours saved monthly** (59 minutes per task on average)
-- **$28.9M in estimated monthly savings** vs. $450K development cost
-- **4.2/5 user satisfaction** rating
-
-But the most revealing metric is this: **149,000 registered users, but only 78,517 active.** That's a **47% activation gap**—70,000 people signed up but aren't using it regularly.
-
-**What Pair Chat does:**
-- Secure chat interface (like ChatGPT, but gov-cleared)
+**What it does:**
+- Secure chat interface (gov-cleared for RESTRICTED/SENSITIVE NORMAL)
 - Custom Assistants (20,000+ created by users)
 - Specialized tools: Pair Search (legislative research), Pair Noms (meeting minutes), Batch Jobs (bulk analysis)
 
-But here's what the metrics don't tell you: **Why did 70,000 people sign up but never activate?**
+**The numbers:**
+- **78,517 monthly active users** (70% of public service)
+- **832,280 hours saved monthly** (59 minutes per task average)
+- **$28.9M in estimated monthly savings** vs. $450K development cost
+- **4.2/5 user satisfaction** rating
+
+**The product works. The challenge is adoption.**
 
 ---
 
-## 2.5. HOW I DISCOVERED THIS (30 seconds)
+## 4. ROOT CAUSE: How I Discovered This (2 minutes)
 
 [SPEAKER NOTE: Show research rigor and user empathy. This builds credibility.]
 
-I spent 2 weeks interviewing inactive users to understand the 47% activation gap. Here's what I heard:
+### 4.1 The Research
 
-**From a policy officer at MOH:**
-> "I signed up because my boss told me to. But I've never logged in because I don't know what to ask it. And honestly, I'm terrified of accidentally sharing classified data."
-
-**From an ops manager at MOM:**
-> "I tried it once. Asked it to draft a memo. The output was... fine? But I spent 30 minutes editing it anyway. Easier to just write it myself."
-
-**From an analytics lead at MTI:**
-> "I know AIBots exist. My colleague raves about one for procurement. But I have no idea how to find it or if it's any good."
-
-**The pattern:** It's not that Pair Chat doesn't work. It's that officers don't know **what it's for**, don't trust **where their data goes**, and can't discover **what's already been built**.
-
-That's when I realized: this isn't a feature gap—it's a trust and discoverability problem.
+I spent 2 weeks interviewing inactive users to understand the 47% activation gap.
 
 ---
 
-## 3. THE INSIGHT: From Tool to Platform (2-3 minutes)
+### 4.2 User Voice: Trust Barrier
 
-[SPEAKER NOTE: This is your original POV. Speak with conviction.]
+**From a policy officer at MOH:**
 
-### The Pattern I See
+> "I signed up because my boss told me to. But I've never logged in because I don't know what to ask it. And honestly, I'm terrified of accidentally sharing classified data."
 
-Most product teams would look at 70% adoption and celebrate. I see **three interconnected signals** that reveal a deeper opportunity:
+**Pattern: Security anxiety prevents first use.**
+
+---
+
+### 4.3 User Voice: Unclear Value
+
+**From an ops manager at MOM:**
+
+> "I tried it once. Asked it to draft a memo. The output was... fine? But I spent 30 minutes editing it anyway. Easier to just write it myself."
+
+**Pattern: Unclear ROI leads to abandonment.**
+
+---
+
+### 4.4 User Voice: Discoverability Gap
+
+**From an analytics lead at MTI:**
+
+> "I know AIBots exist. My colleague raves about one for procurement. But I have no idea how to find it or if it's any good."
+
+**Pattern: Can't discover what's already been built.**
+
+---
+
+### 4.5 The Diagnosis
+
+**The pattern across all three:**
+
+It's not that Pair Chat doesn't work. It's that officers don't know **what it's for**, don't trust **where their data goes**, and can't discover **what's already been built**.
+
+**This isn't a feature gap—it's a trust and discoverability problem.**
+
+---
+
+## 5. EVIDENCE: The Three Signals (2 minutes)
+
+[SPEAKER NOTE: Prove why the activation gap matters. Show the opportunity cost.]
+
+Most product teams would look at 70% adoption and celebrate. I see **three interconnected signals** that reveal why closing the activation gap is critical:
 
 **Signal 1: The 20,000 AIBot Explosion**
 - Users aren't just using Pair Chat—they're **building on it**
@@ -109,22 +149,27 @@ Now look at the 30% non-users. What do they have in common? **No champions. No s
 
 That's when I saw it: Pair Chat's true competition isn't ChatGPT—it's **inertia**. And the unlock isn't better features—it's **making trust visible and discovery effortless**.
 
-### The Core Problem
+---
+
+## 6. THE DIAGNOSIS: Three Barriers (1 minute)
+
+[SPEAKER NOTE: Connect the evidence to the root cause.]
 
 **Pair Chat has solved the "create value" problem. The challenge now is the "capture value" problem.**
 
-Specifically:
+Specifically, three barriers prevent activation:
+
 1. **Trust barrier:** 30% of officers don't trust it enough to start (security concerns, hallucination fears, unclear safe-use boundaries)
 2. **Discoverability gap:** Officers who would benefit don't know which use cases fit their work
 3. **Quality variance:** 20,000 user-created AIBots with no governance = inconsistent quality and potential risk
 
 **This isn't a feature gap—it's a platform maturity problem.**
 
-This insight led me to ask: **If Pair Chat is becoming a platform, what's the right strategic move?**
+This diagnosis led me to ask: **If Pair Chat is becoming a platform, what's the right strategic move?**
 
 ---
 
-## 4. IMPLICATION: What This Means for Product Strategy (2 minutes)
+## 7. STRATEGIC OPTIONS: The Choice (2 minutes)
 
 [SPEAKER NOTE: Show strategic thinking. Discuss trade-offs explicitly.]
 
@@ -157,38 +202,65 @@ If Pair Chat is becoming a platform, we face a classic platform dilemma:
 
 I evaluated these options against 3 criteria:
 
-**1. Time to Impact**
-- Option A (Expand user base): 30-60 days to see activation movement
-- Option B (Deepen engagement): 60-90 days to see AIBot quality improve
-- Option C (Platform governance): 45-60 days to launch marketplace MVP
+---
 
-**2. Risk**
-- Option A: Medium risk (trust messaging could backfire)
-- Option B: Low risk (but leaves 45K officers on table)
-- Option C: High risk (curation bottleneck, could slow innovation)
+#### Decision Criterion 1: Time to Impact
 
-**3. Compounding Effects**
-- Option A: Unlocks network effects (more users → more AIBots → more sharing)
-- Option B: Deepens moat (better AIBots → higher retention)
-- Option C: Enables discovery (marketplace → more AIBot usage)
+- **Option A (Expand user base):** 30-60 days to see activation movement
+- **Option B (Deepen engagement):** 60-90 days to see AIBot quality improve
+- **Option C (Platform governance):** 45-60 days to launch marketplace MVP
 
-**I also talked to 5 agency heads.** 4 said trust is the #1 barrier. 1 said discoverability. That validated my hypothesis: **A + C in sequence** addresses both.
-
-**Decision criteria:** If activation rate doesn't move 5% by Day 30, I'll pivot to Option B (deepen engagement with existing users) instead.
-
-**Trade-off I'm making:**
-- **Deprioritizing:** New features, model upgrades, expanding to new use cases
-- **Prioritizing:** Trust-building UX, onboarding, AIBot quality/discovery
-
-**Why this trade-off makes sense:**
-- Pair Chat already has strong capabilities (Claude Sonnet 4, document uploads, batch jobs)
-- The bottleneck isn't "what it can do"—it's "who trusts it" and "how to find the right AIBot"
-
-So here's what I'd do in the first 90 days to close that activation gap:
+**Winner: Option A** (fastest path to measurable impact)
 
 ---
 
-## 5. PATH FORWARD: 30/60/90 Day Plan (2 minutes)
+#### Decision Criterion 2: Risk
+
+- **Option A:** Medium risk (trust messaging could backfire)
+- **Option B:** Low risk (but leaves 45K officers on table)
+- **Option C:** High risk (curation bottleneck, could slow innovation)
+
+**Winner: Option A** (acceptable risk with clear mitigation)
+
+---
+
+#### Decision Criterion 3: Compounding Effects
+
+- **Option A:** Unlocks network effects (more users → more AIBots → more sharing)
+- **Option B:** Deepens moat (better AIBots → higher retention)
+- **Option C:** Enables discovery (marketplace → more AIBot usage)
+
+**Winner: Option A** (strongest compounding potential)
+
+---
+
+#### Validation & Decision Criteria
+
+**I also talked to 5 agency heads.** 4 said trust is the #1 barrier. 1 said discoverability.
+
+That validated my hypothesis: **Option A + C in sequence** addresses both.
+
+**Decision criteria:** If activation rate doesn't move 5% by Day 30, I'll pivot to Option B instead.
+
+---
+
+#### The Trade-Off
+
+**Deprioritizing:**
+- New features (e.g., Pair Scribe, new integrations)
+- Model upgrades (Claude Sonnet 4 is already strong)
+- Expanding to new use cases
+
+**Prioritizing:**
+- Trust-building UX
+- Onboarding experience
+- AIBot quality/discovery
+
+**Why this makes sense:** The bottleneck isn't "what it can do"—it's "who trusts it" and "how to find the right AIBot"
+
+---
+
+## 8. PATH FORWARD: 30/60/90 Day Plan (2 minutes)
 
 [SPEAKER NOTE: Be specific. Show you can execute, not just strategize.]
 
@@ -336,7 +408,7 @@ Now, let me be explicit about what I'm **NOT** doing—and why those trade-offs 
 
 ---
 
-## 6. CLOSE: The One Thing That Matters (30 seconds)
+## 9. CLOSE: The One Thing That Matters (30 seconds)
 
 [SPEAKER NOTE: End with conviction AND vulnerability. Show you're thoughtful about risks.]
 

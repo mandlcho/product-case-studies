@@ -613,11 +613,32 @@
         </div>
     </section>
 
-    <!-- SLIDE 3: CONTEXT - WHAT IS PAIR CHAT -->
+    <!-- SLIDE 3: THE CORE PROBLEM -->
+    <section class="slide">
+        <h2 class="reveal">The Core Problem: 47% Activation Gap</h2>
+        <div class="callout info reveal" style="background: rgba(239, 68, 68, 0.1); border-left-color: var(--accent-red);">
+            <p style="font-size: 1.4rem; font-weight: 600;"><strong>149,000 registered users. Only 78,517 active.</strong></p>
+            <p style="font-size: 1.2rem;">That's a <strong style="color: var(--accent-red);">47% activation gap</strong>—70,000 officers signed up but never activated.</p>
+            <p style="margin-top: 1rem;">They're not churned users who tried and left. They're people who registered and never started.</p>
+        </div>
+        <div class="callout reveal" style="margin-top: 2rem;">
+            <p style="font-size: 1.2rem; font-weight: 600;">This represents <strong style="color: var(--accent-green);">$8.7M in untapped monthly productivity value.</strong></p>
+        </div>
+        <p class="reveal" style="margin-top: 2rem; font-size: 1.1rem;">The question isn't "Does Pair Chat work?" (It does—832,280 hours saved monthly, 4.2/5 satisfaction, 20,000 user-created AIBots.)</p>
+        <p class="reveal" style="font-size: 1.2rem; font-weight: 600; color: var(--accent-amber);">The question is: <strong>Why did 70,000 people sign up but never activate?</strong></p>
+    </section>
+
+    <!-- SLIDE 4: CONTEXT - WHAT IS PAIR CHAT -->
     <section class="slide">
         <h2 class="reveal">Understanding Pair Chat</h2>
         <p class="reveal">Pair Chat is Singapore's government-specific AI assistant—think ChatGPT, but <strong>cleared for RESTRICTED/SENSITIVE NORMAL data</strong> and <strong>zero-cost</strong> to all 150,000 public officers.</p>
-        <div class="metrics-grid reveal">
+        <h3 class="reveal">What it does:</h3>
+        <ul class="reveal">
+            <li>Secure chat interface (gov-cleared for RESTRICTED/SENSITIVE NORMAL)</li>
+            <li>Custom Assistants (20,000+ created by users)</li>
+            <li>Specialized tools: Pair Search, Pair Noms, Batch Jobs</li>
+        </ul>
+        <div class="metrics-grid reveal" style="margin-top: 2rem;">
             <div class="metric">
                 <span class="metric-value">78,517</span>
                 <span class="metric-label">Monthly Active Users</span>
@@ -635,50 +656,56 @@
                 <span class="metric-label">User Satisfaction</span>
             </div>
         </div>
+        <p class="reveal" style="margin-top: 2rem; font-weight: 600; color: var(--accent-green);">The product works. The challenge is adoption.</p>
     </section>
 
-    <!-- SLIDE 4: THE ACTIVATION GAP -->
+    <!-- SLIDE 5: ROOT CAUSE - THE RESEARCH -->
     <section class="slide">
-        <h2 class="reveal">The Most Revealing Metric</h2>
-        <div class="callout info reveal">
-            <p style="font-size: 1.2rem;"><strong>149,000 registered users, but only 78,517 active.</strong></p>
-            <p>That's a <strong style="color: var(--accent-red);">47% activation gap</strong>—70,000 people signed up but aren't using it regularly.</p>
-        </div>
-        <h3 class="reveal">What Pair Chat Does:</h3>
-        <ul class="reveal">
-            <li>Secure chat interface (like ChatGPT, but gov-cleared)</li>
-            <li>Custom Assistants (20,000+ created by users)</li>
-            <li>Specialized tools: Pair Search, Pair Noms, Batch Jobs</li>
-        </ul>
+        <h2 class="reveal">Root Cause: How I Discovered This</h2>
+        <p class="reveal" style="font-size: 1.8rem; font-weight: 600; color: var(--accent-green); margin-top: 3rem;">I spent 2 weeks interviewing inactive users to understand the 47% activation gap.</p>
     </section>
 
-    <!-- SLIDE 4.5: HOW I DISCOVERED THIS -->
+    <!-- SLIDE 6: USER VOICE - TRUST BARRIER -->
     <section class="slide">
-        <h2 class="reveal">How I Discovered This</h2>
-        <p class="reveal">I spent 2 weeks interviewing inactive users to understand the 47% activation gap. Here's what I heard:</p>
-        
-        <div class="callout reveal" style="margin: 1.5rem 0;">
-            <p><strong>From a policy officer at MOH:</strong></p>
-            <p style="font-style: italic; margin-top: 0.5rem;">"I signed up because my boss told me to. But I've never logged in because I don't know what to ask it. And honestly, I'm terrified of accidentally sharing classified data."</p>
+        <h3 class="reveal" style="font-size: 1.2rem; margin-bottom: 2rem;">From a policy officer at MOH:</h3>
+        <div class="callout reveal" style="background: rgba(239, 68, 68, 0.1); border-left-color: var(--accent-red);">
+            <p style="font-style: italic; font-size: 1.4rem; line-height: 1.6;">"I signed up because my boss told me to. But I've never logged in because I don't know what to ask it. And honestly, I'm terrified of accidentally sharing classified data."</p>
         </div>
-        
-        <div class="callout reveal" style="margin: 1.5rem 0;">
-            <p><strong>From an ops manager at MOM:</strong></p>
-            <p style="font-style: italic; margin-top: 0.5rem;">"I tried it once. Asked it to draft a memo. The output was... fine? But I spent 30 minutes editing it anyway. Easier to just write it myself."</p>
-        </div>
-        
-        <div class="callout reveal" style="margin: 1.5rem 0;">
-            <p><strong>From an analytics lead at MTI:</strong></p>
-            <p style="font-style: italic; margin-top: 0.5rem;">"I know AIBots exist. My colleague raves about one for procurement. But I have no idea how to find it or if it's any good."</p>
-        </div>
-        
-        <p class="reveal" style="margin-top: 2rem;"><strong>The pattern:</strong> It's not that Pair Chat doesn't work. It's that officers don't know <strong>what it's for</strong>, don't trust <strong>where their data goes</strong>, and can't discover <strong>what's already been built</strong>.</p>
+        <p class="reveal" style="margin-top: 3rem; font-size: 1.3rem; font-weight: 600; color: var(--accent-amber);">Pattern: Security anxiety prevents first use.</p>
     </section>
 
-    <!-- SLIDE 5: THE THREE SIGNALS -->
+    <!-- SLIDE 7: USER VOICE - UNCLEAR VALUE -->
     <section class="slide">
-        <h2 class="reveal">The Pattern I See</h2>
-        <p class="reveal">Most product teams would look at 70% adoption and celebrate. I see <strong>three interconnected signals</strong> that reveal a deeper opportunity:</p>
+        <h3 class="reveal" style="font-size: 1.2rem; margin-bottom: 2rem;">From an ops manager at MOM:</h3>
+        <div class="callout reveal" style="background: rgba(245, 158, 11, 0.1); border-left-color: var(--accent-amber);">
+            <p style="font-style: italic; font-size: 1.4rem; line-height: 1.6;">"I tried it once. Asked it to draft a memo. The output was... fine? But I spent 30 minutes editing it anyway. Easier to just write it myself."</p>
+        </div>
+        <p class="reveal" style="margin-top: 3rem; font-size: 1.3rem; font-weight: 600; color: var(--accent-amber);">Pattern: Unclear ROI leads to abandonment.</p>
+    </section>
+
+    <!-- SLIDE 8: USER VOICE - DISCOVERABILITY GAP -->
+    <section class="slide">
+        <h3 class="reveal" style="font-size: 1.2rem; margin-bottom: 2rem;">From an analytics lead at MTI:</h3>
+        <div class="callout reveal" style="background: rgba(59, 130, 246, 0.1); border-left-color: var(--accent-blue);">
+            <p style="font-style: italic; font-size: 1.4rem; line-height: 1.6;">"I know AIBots exist. My colleague raves about one for procurement. But I have no idea how to find it or if it's any good."</p>
+        </div>
+        <p class="reveal" style="margin-top: 3rem; font-size: 1.3rem; font-weight: 600; color: var(--accent-amber);">Pattern: Can't discover what's already been built.</p>
+    </section>
+
+    <!-- SLIDE 9: THE DIAGNOSIS -->
+    <section class="slide">
+        <h2 class="reveal">The Diagnosis</h2>
+        <p class="reveal" style="font-size: 1.5rem; margin-top: 2rem;">The pattern across all three:</p>
+        <div class="callout reveal" style="margin-top: 2rem;">
+            <p style="font-size: 1.3rem; line-height: 1.6;">It's not that Pair Chat doesn't work. It's that officers don't know <strong style="color: var(--accent-green);">what it's for</strong>, don't trust <strong style="color: var(--accent-red);">where their data goes</strong>, and can't discover <strong style="color: var(--accent-blue);">what's already been built</strong>.</p>
+        </div>
+        <p class="reveal" style="margin-top: 3rem; font-size: 1.5rem; font-weight: 600; color: var(--accent-amber);">This isn't a feature gap—it's a trust and discoverability problem.</p>
+    </section>
+
+    <!-- SLIDE 10: EVIDENCE - THE THREE SIGNALS -->
+    <section class="slide">
+        <h2 class="reveal">Evidence: The Three Signals</h2>
+        <p class="reveal">Most product teams would look at 70% adoption and celebrate. I see <strong>three interconnected signals</strong> that reveal why closing the activation gap is critical:</p>
         <div class="signal-card reveal">
             <h3>Signal 1: The 20,000 AIBot Explosion</h3>
             <ul>
@@ -689,7 +716,7 @@
         </div>
     </section>
 
-    <!-- SLIDE 6: SIGNALS 2 & 3 -->
+    <!-- SLIDE 11: SIGNALS 2 & 3 -->
     <section class="slide">
         <div class="signal-card reveal">
             <h3>Signal 2: The Activation Gap</h3>
@@ -709,7 +736,7 @@
         </div>
     </section>
 
-    <!-- SLIDE 7: THE CORE INSIGHT -->
+    <!-- SLIDE 12: THE CORE INSIGHT -->
     <section class="slide">
         <h2 class="reveal">What These Signals Mean Together</h2>
         <div class="callout reveal">
@@ -734,9 +761,9 @@
         <p class="reveal"><strong style="color: var(--accent-green);">Pair Chat has solved the "create value" problem. The challenge now is the "capture value" problem.</strong></p>
     </section>
 
-    <!-- SLIDE 8: THE PROBLEM BREAKDOWN -->
+    <!-- SLIDE 9: THE DIAGNOSIS -->
     <section class="slide">
-        <h2 class="reveal">Three Barriers to Value Capture</h2>
+        <h2 class="reveal">The Diagnosis: Three Barriers</h2>
         <ol class="reveal">
             <li><strong>Trust barrier:</strong> 30% of officers don't trust it enough to start (security concerns, hallucination fears, unclear safe-use boundaries)</li>
             <li><strong>Discoverability gap:</strong> Officers who would benefit don't know which use cases fit their work</li>
@@ -747,7 +774,7 @@
         </div>
     </section>
 
-    <!-- SLIDE 9: STRATEGIC OPTIONS -->
+    <!-- SLIDE 14: STRATEGIC OPTIONS -->
     <section class="slide">
         <h2 class="reveal">The Strategic Choice</h2>
         <p class="reveal">If Pair Chat is becoming a platform, we face a classic platform dilemma:</p>
@@ -773,7 +800,7 @@
         </div>
     </section>
 
-    <!-- SLIDE 10: MY RECOMMENDATION -->
+    <!-- SLIDE 15: MY RECOMMENDATION -->
     <section class="slide">
         <h2 class="reveal">My Recommendation: Option A + C in Sequence</h2>
         <div class="callout reveal">
@@ -823,7 +850,7 @@
         </div>
     </section>
 
-    <!-- SLIDE 11: 30/60/90 OVERVIEW -->
+    <!-- SLIDE 16: 30/60/90 OVERVIEW -->
     <section class="slide">
         <h2 class="reveal">Path Forward: 30/60/90 Day Plan</h2>
         <div class="callout info reveal">
@@ -846,7 +873,7 @@
         </div>
     </section>
 
-    <!-- SLIDE 11.5: FIRST 30 DAYS WEEK-BY-WEEK -->
+    <!-- SLIDE 17: FIRST 30 DAYS WEEK-BY-WEEK -->
     <section class="slide">
         <h2 class="reveal">First 30 Days: Week-by-Week Execution</h2>
         <div class="timeline reveal">
@@ -894,7 +921,7 @@
         </div>
     </section>
 
-    <!-- SLIDE 12: 30 DAYS -->
+    <!-- SLIDE 18: 30 DAYS -->
     <section class="slide">
         <h2 class="reveal">30 Days: Make Trust Visible</h2>
         <p class="reveal"><strong>Problem:</strong> Officers don't trust Pair Chat because they don't understand the safety model</p>
@@ -924,7 +951,7 @@
         </div>
     </section>
 
-    <!-- SLIDE 13: 60 DAYS -->
+    <!-- SLIDE 19: 60 DAYS -->
     <section class="slide">
         <h2 class="reveal">60 Days: Make Discovery Effortless</h2>
         <p class="reveal"><strong>Problem:</strong> Officers don't know which AIBots exist or which ones are high-quality</p>
@@ -954,7 +981,7 @@
         </div>
     </section>
 
-    <!-- SLIDE 14: 90 DAYS -->
+    <!-- SLIDE 20: 90 DAYS -->
     <section class="slide">
         <h2 class="reveal">90 Days: Make Adoption Compounding</h2>
         <p class="reveal"><strong>Problem:</strong> Individual adoption doesn't spread to teams</p>
@@ -984,7 +1011,7 @@
         </div>
     </section>
 
-    <!-- SLIDE 15: WHAT I'M NOT DOING -->
+    <!-- SLIDE 21: WHAT I'M NOT DOING -->
     <section class="slide">
         <h2 class="reveal">What I'm NOT Doing (and Why)</h2>
         <div class="callout warning reveal">
@@ -1009,7 +1036,7 @@
         </div>
     </section>
 
-    <!-- SLIDE 16: THE CLOSE -->
+    <!-- SLIDE 22: THE CLOSE -->
     <section class="slide">
         <h2 class="reveal">The One Thing That Matters</h2>
         <div class="callout reveal" style="background: rgba(16, 185, 129, 0.15); border-left-width: 6px;">
@@ -1047,7 +1074,7 @@
         </p>
     </section>
 
-    <!-- SLIDE 17: APPENDIX - COMPETITIVE POSITIONING -->
+    <!-- SLIDE 23: APPENDIX - COMPETITIVE POSITIONING -->
     <section class="slide">
         <h2 class="reveal">Appendix: Competitive Positioning</h2>
         <table class="reveal">
@@ -1097,7 +1124,7 @@
         </div>
     </section>
 
-    <!-- SLIDE 18: APPENDIX - KEY METRICS -->
+    <!-- SLIDE 24: APPENDIX - KEY METRICS -->
     <section class="slide">
         <h2 class="reveal">Appendix: Key Metrics Summary</h2>
         <table class="reveal">
@@ -1143,7 +1170,7 @@
         </table>
     </section>
 
-    <!-- SLIDE 19: APPENDIX - QUESTIONS -->
+    <!-- SLIDE 25: APPENDIX - QUESTIONS -->
     <section class="slide">
         <h2 class="reveal">Appendix: Questions This Raises</h2>
         <ol class="reveal">
