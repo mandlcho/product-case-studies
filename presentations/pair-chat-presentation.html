@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pair Chat: From Tool to Platform | OGP PM Interview</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+    <style>
+        /* ===========================================
+           PAIR CHAT PRESENTATION
+           Style: Product Focused (Monospace)
+           Animated gradient backgrounds
+           =========================================== */
+        :root {
+            --bg-primary: #0f172a;
+            --bg-gradient-start: #1e293b;
+            --bg-gradient-end: #0f172a;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #64748b;
+            --accent-green: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-blue: #3b82f6;
+            --accent-red: #ef4444;
+            
+            --font-display: 'JetBrains Mono', monospace;
+            --font-body: 'IBM Plex Mono', monospace;
+            
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-snap-type: y mandatory;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ===========================================
+           ANIMATED GRADIENT ORBS
+           Continuously moving background elements
+           =========================================== */
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.2;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::before {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--accent-green) 0%, transparent 70%);
+            top: -150px;
+            right: -150px;
+            animation: float-orb-1 25s ease-in-out infinite;
+        }
+
+        body::after {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--accent-amber) 0%, transparent 70%);
+            bottom: -100px;
+            left: -100px;
+            animation: float-orb-2 30s ease-in-out infinite;
+        }
+
+        @keyframes float-orb-1 {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            25% {
+                transform: translate(80px, 120px) scale(1.15);
+            }
+            50% {
+                transform: translate(-50px, 80px) scale(0.9);
+            }
+            75% {
+                transform: translate(40px, -60px) scale(1.05);
+            }
+        }
+
+        @keyframes float-orb-2 {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            25% {
+                transform: translate(-70px, -100px) scale(1.2);
+            }
+            50% {
+                transform: translate(60px, -50px) scale(0.95);
+            }
+            75% {
+                transform: translate(-40px, 70px) scale(1.1);
+            }
+        }
+
+        /* ===========================================
+           PROGRESS BAR
+           =========================================== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent-green);
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.3s ease;
+        }
+
+        /* ===========================================
+           NAVIGATION DOTS
+           =========================================== */
+        .nav-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s var(--ease-out-expo);
+            border: 2px solid transparent;
+        }
+
+        .nav-dot:hover {
+            background: var(--text-secondary);
+            transform: scale(1.3);
+        }
+
+        .nav-dot.active {
+            background: var(--accent-green);
+            transform: scale(1.5);
+            box-shadow: 0 0 12px var(--accent-green);
+        }
+
+        /* ===========================================
+           SLIDE CONTAINER
+           =========================================== */
+        .slide {
+            min-height: 100vh;
+            padding: clamp(2rem, 5vw, 4rem);
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* ===========================================
+           TYPOGRAPHY
+           =========================================== */
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        h1::before {
+            content: '> ';
+            color: var(--accent-green);
+            opacity: 0.8;
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+        }
+
+        h2::before {
+            content: '// ';
+            color: var(--accent-blue);
+            opacity: 0.6;
+            font-size: 0.8em;
+        }
+
+        h3 {
+            font-family: var(--font-display);
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--accent-amber);
+        }
+
+        p {
+            font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* ===========================================
+           TITLE SLIDE
+           =========================================== */
+        .title-slide {
+            text-align: left;
+        }
+
+        .title-slide h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            padding-left: 2rem;
+            border-left: 3px solid var(--accent-blue);
+            line-height: 1.6;
+        }
+
+        .meta {
+            font-size: 1rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--accent-amber);
+        }
+
+        .meta::before {
+            content: '●';
+            color: var(--accent-green);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* ===========================================
+           METRICS GRID
+           =========================================== */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .metric {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .metric-value {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* ===========================================
+           LISTS
+           =========================================== */
+        ul, ol {
+            margin: 1.5rem 0;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        li {
+            margin-bottom: 1.5rem;
+            padding-left: 2rem;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        ul li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent-green);
+            font-weight: bold;
+        }
+
+        ol {
+            counter-reset: item;
+        }
+
+        ol li::before {
+            content: counter(item) '.';
+            counter-increment: item;
+            position: absolute;
+            left: 0;
+            color: var(--accent-amber);
+            font-weight: 600;
+            font-family: var(--font-display);
+        }
+
+        /* ===========================================
+           CALLOUT BOXES
+           =========================================== */
+        .callout {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--accent-green);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+        }
+
+        .callout.warning {
+            background: rgba(245, 158, 11, 0.1);
+            border-left-color: var(--accent-amber);
+        }
+
+        .callout.info {
+            background: rgba(59, 130, 246, 0.1);
+            border-left-color: var(--accent-blue);
+        }
+
+        /* ===========================================
+           TABLES
+           =========================================== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            font-weight: 600;
+            color: var(--accent-amber);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        td {
+            color: var(--text-secondary);
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* ===========================================
+           SIGNAL CARDS
+           =========================================== */
+        .signal-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .signal-card h3 {
+            margin-bottom: 1rem;
+        }
+
+        /* ===========================================
+           OPTIONS GRID
+           =========================================== */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .option-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .option-card.recommended {
+            border-color: var(--accent-green);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .option-card h3 {
+            margin-bottom: 1rem;
+        }
+
+        /* ===========================================
+           TIMELINE
+           =========================================== */
+        .timeline {
+            margin: 2rem 0;
+        }
+
+        .timeline-item {
+            margin-bottom: 3rem;
+            padding-left: 3rem;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 1.5rem;
+            width: 2px;
+            height: calc(100% + 1rem);
+            background: rgba(16, 185, 129, 0.2);
+        }
+
+        .timeline-item:last-child::after {
+            display: none;
+        }
+
+        /* ===========================================
+           ANIMATIONS
+           =========================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s var(--ease-out-expo),
+                        transform 0.7s var(--ease-out-expo);
+        }
+
+        .slide.visible .reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal:nth-child(1) { transition-delay: 0.1s; }
+        .reveal:nth-child(2) { transition-delay: 0.2s; }
+        .reveal:nth-child(3) { transition-delay: 0.3s; }
+        .reveal:nth-child(4) { transition-delay: 0.4s; }
+        .reveal:nth-child(5) { transition-delay: 0.5s; }
+        .reveal:nth-child(6) { transition-delay: 0.6s; }
+
+        /* ===========================================
+           KEYBOARD HINT
+           =========================================== */
+        .keyboard-hint {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            z-index: 100;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .key {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+        }
+
+        /* ===========================================
+           RESPONSIVE
+           =========================================== */
+        @media (max-width: 768px) {
+            .nav-dots,
+            .keyboard-hint {
+                display: none;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            body::before,
+            body::after {
+                opacity: 0.1;
+            }
+        }
+
+        /* ===========================================
+           REDUCED MOTION
+           =========================================== */
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            .reveal {
+                transition: opacity 0.3s ease;
+                transform: none;
+            }
+
+            body::before,
+            body::after {
+                animation: none;
+            }
+
+            .meta::before {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress bar -->
+    <div class="progress-bar"></div>
+
+    <!-- Navigation dots -->
+    <nav class="nav-dots" aria-label="Slide navigation">
+        <!-- Generated by JS -->
+    </nav>
+
+    <!-- Keyboard hint -->
+    <div class="keyboard-hint">
+        <span>Navigate: <span class="key">←</span> <span class="key">→</span> or <span class="key">Space</span></span>
+    </div>
+
+    <!-- SLIDE 1: TITLE -->
+    <section class="slide title-slide">
+        <h1 class="reveal">Pair Chat: From Tool to Platform</h1>
+        <p class="reveal subtitle">Product Strategy for OGP Senior PM Interview</p>
+        <p class="reveal meta">Mandl Cho • January 2026</p>
+    </section>
+
+    <!-- SLIDE 2: THE HOOK -->
+    <section class="slide">
+        <h2 class="reveal">The Hook</h2>
+        <div class="callout reveal">
+            <p style="font-size: 1.3rem; font-weight: 600; color: var(--text-primary);">
+                "20,000 custom AIBots created by users in 18 months."
+            </p>
+        </div>
+        <p class="reveal">That's not a feature adoption metric—that's a <strong>platform signal</strong>. Pair Chat has crossed the threshold from <strong>tool</strong> to <strong>platform</strong>. Users aren't just consuming AI assistance; they're creating institutional knowledge at scale.</p>
+        <p class="reveal">But here's the tension: <strong>Only 70% of public officers are using it.</strong> The remaining 30%—roughly 45,000 officers—represent untapped potential worth an estimated <strong style="color: var(--accent-green);">$8.7M in monthly productivity gains</strong>.</p>
+        <div class="callout warning reveal">
+            <p style="font-weight: 600;">The question isn't "Does Pair Chat work?" It's <strong>"How do we capture the value we're leaving on the table?"</strong></p>
+        </div>
+    </section>
+
+    <!-- SLIDE 3: CONTEXT - WHAT IS PAIR CHAT -->
+    <section class="slide">
+        <h2 class="reveal">Understanding Pair Chat</h2>
+        <p class="reveal">Pair Chat is Singapore's government-specific AI assistant—think ChatGPT, but <strong>cleared for RESTRICTED/SENSITIVE NORMAL data</strong> and <strong>zero-cost</strong> to all 150,000 public officers.</p>
+        <div class="metrics-grid reveal">
+            <div class="metric">
+                <span class="metric-value">78,517</span>
+                <span class="metric-label">Monthly Active Users</span>
+            </div>
+            <div class="metric">
+                <span class="metric-value">832,280</span>
+                <span class="metric-label">Hours Saved/Month</span>
+            </div>
+            <div class="metric">
+                <span class="metric-value">$28.9M</span>
+                <span class="metric-label">Monthly Savings</span>
+            </div>
+            <div class="metric">
+                <span class="metric-value">4.2/5</span>
+                <span class="metric-label">User Satisfaction</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 4: THE ACTIVATION GAP -->
+    <section class="slide">
+        <h2 class="reveal">The Most Revealing Metric</h2>
+        <div class="callout info reveal">
+            <p style="font-size: 1.2rem;"><strong>149,000 registered users, but only 78,517 active.</strong></p>
+            <p>That's a <strong style="color: var(--accent-red);">47% activation gap</strong>—70,000 people signed up but aren't using it regularly.</p>
+        </div>
+        <h3 class="reveal">What Pair Chat Does:</h3>
+        <ul class="reveal">
+            <li>Secure chat interface (like ChatGPT, but gov-cleared)</li>
+            <li>Custom Assistants (20,000+ created by users)</li>
+            <li>Specialized tools: Pair Search, Pair Noms, Batch Jobs</li>
+        </ul>
+    </section>
+
+    <!-- SLIDE 5: THE THREE SIGNALS -->
+    <section class="slide">
+        <h2 class="reveal">The Pattern I See</h2>
+        <p class="reveal">Most product teams would look at 70% adoption and celebrate. I see <strong>three interconnected signals</strong> that reveal a deeper opportunity:</p>
+        <div class="signal-card reveal">
+            <h3>Signal 1: The 20,000 AIBot Explosion</h3>
+            <ul>
+                <li>Users aren't just using Pair Chat—they're <strong>building on it</strong></li>
+                <li>Examples: SGH's "Proph Abby", BCA's compliance reviewers, PA's Charity Act interpreter</li>
+                <li>This is <strong>bottom-up innovation</strong> at scale</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- SLIDE 6: SIGNALS 2 & 3 -->
+    <section class="slide">
+        <div class="signal-card reveal">
+            <h3>Signal 2: The Activation Gap</h3>
+            <ul>
+                <li>149K registered, 78.5K active = <strong>47% aren't converting</strong></li>
+                <li>These aren't people who tried and left—they signed up but never started</li>
+                <li>Classic <strong>trust + discoverability problem</strong>, not a capability problem</li>
+            </ul>
+        </div>
+        <div class="signal-card reveal">
+            <h3>Signal 3: The Case Study Pattern</h3>
+            <ul>
+                <li>SGH: 95% compliance (up from 80%), 90% time savings</li>
+                <li>BCA: "Hours to minutes" for report reviews</li>
+                <li>PA: Self-service enabled for complex legislation</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- SLIDE 7: THE CORE INSIGHT -->
+    <section class="slide">
+        <h2 class="reveal">What These Signals Mean Together</h2>
+        <div class="callout reveal">
+            <p style="font-size: 1.2rem; font-weight: 600;">When users <strong>trust</strong> Pair Chat enough to use it, they don't just use it—they <strong>build institutional knowledge</strong> with it.</p>
+            <p>The 20,000 AIBots aren't just productivity hacks; they're <strong>codified expertise</strong> that compounds over time.</p>
+        </div>
+        <h3 class="reveal">The Core Problem</h3>
+        <p class="reveal"><strong style="color: var(--accent-green);">Pair Chat has solved the "create value" problem. The challenge now is the "capture value" problem.</strong></p>
+    </section>
+
+    <!-- SLIDE 8: THE PROBLEM BREAKDOWN -->
+    <section class="slide">
+        <h2 class="reveal">Three Barriers to Value Capture</h2>
+        <ol class="reveal">
+            <li><strong>Trust barrier:</strong> 30% of officers don't trust it enough to start (security concerns, hallucination fears, unclear safe-use boundaries)</li>
+            <li><strong>Discoverability gap:</strong> Officers who would benefit don't know which use cases fit their work</li>
+            <li><strong>Quality variance:</strong> 20,000 user-created AIBots with no governance = inconsistent quality and potential risk</li>
+        </ol>
+        <div class="callout warning reveal">
+            <p style="font-weight: 600;">This isn't a feature gap—it's a <strong>platform maturity problem</strong>.</p>
+        </div>
+    </section>
+
+    <!-- SLIDE 9: STRATEGIC OPTIONS -->
+    <section class="slide">
+        <h2 class="reveal">The Strategic Choice</h2>
+        <p class="reveal">If Pair Chat is becoming a platform, we face a classic platform dilemma:</p>
+        <div class="options-grid reveal">
+            <div class="option-card">
+                <h3>Option A: Expand User Base</h3>
+                <p><strong>Focus:</strong> The 30% non-users</p>
+                <p><strong>Pros:</strong> Unlock $8.7M/month, broader impact</p>
+                <p><strong>Cons:</strong> Requires trust-building at scale</p>
+            </div>
+            <div class="option-card">
+                <h3>Option B: Deepen Engagement</h3>
+                <p><strong>Focus:</strong> The 70% active users</p>
+                <p><strong>Pros:</strong> Network effects, institutional knowledge</p>
+                <p><strong>Cons:</strong> Leaves 45K officers on table</p>
+            </div>
+            <div class="option-card">
+                <h3>Option C: Platform Governance</h3>
+                <p><strong>Focus:</strong> The 20,000 AIBots</p>
+                <p><strong>Pros:</strong> Quality control, risk mitigation</p>
+                <p><strong>Cons:</strong> Could slow innovation</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 10: MY RECOMMENDATION -->
+    <section class="slide">
+        <h2 class="reveal">My Recommendation: Option A + C in Sequence</h2>
+        <div class="callout reveal">
+            <h3>Why:</h3>
+            <ol>
+                <li>The 47% activation gap is <strong>low-hanging fruit</strong>—these people already signed up</li>
+                <li>Platform governance (Option C) is <strong>table stakes</strong> as AIBots proliferate</li>
+                <li>Deepening engagement (Option B) happens naturally once trust + governance are solved</li>
+            </ol>
+        </div>
+        <div class="reveal" style="margin-top: 2rem;">
+            <h3>Trade-off I'm Making:</h3>
+            <p><strong style="color: var(--accent-red);">Deprioritizing:</strong> New features, model upgrades, expanding to new use cases</p>
+            <p><strong style="color: var(--accent-green);">Prioritizing:</strong> Trust-building UX, onboarding, AIBot quality/discovery</p>
+        </div>
+    </section>
+
+    <!-- SLIDE 11: 30/60/90 OVERVIEW -->
+    <section class="slide">
+        <h2 class="reveal">Path Forward: 30/60/90 Day Plan</h2>
+        <div class="callout info reveal">
+            <p><strong>Focus Area:</strong> Closing the Activation Gap</p>
+            <p><strong>Goal:</strong> Convert 20% of inactive registered users (14,000 officers) to monthly actives within 90 days</p>
+        </div>
+        <div class="metrics-grid reveal">
+            <div class="metric">
+                <span class="metric-value">78.5K → 92.5K</span>
+                <span class="metric-label">MAU Increase</span>
+            </div>
+            <div class="metric">
+                <span class="metric-value">53% → 62%</span>
+                <span class="metric-label">Activation Rate</span>
+            </div>
+            <div class="metric">
+                <span class="metric-value">7 Days</span>
+                <span class="metric-label">First Task Completion</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 12: 30 DAYS -->
+    <section class="slide">
+        <h2 class="reveal">30 Days: Make Trust Visible</h2>
+        <p class="reveal"><strong>Problem:</strong> Officers don't trust Pair Chat because they don't understand the safety model</p>
+        <div class="timeline reveal">
+            <div class="timeline-item">
+                <h3>In-product trust signals</h3>
+                <ul>
+                    <li>"What's safe to share" banner on first 3 sessions</li>
+                    <li>"Your data is not logged" on every chat start</li>
+                    <li>"Safe Use Checklist" for high-risk tasks</li>
+                </ul>
+            </div>
+            <div class="timeline-item">
+                <h3>Instrument the trust gap</h3>
+                <ul>
+                    <li>Lightweight survey: "What's stopping you?"</li>
+                    <li>Track: trust messaging → first task completion</li>
+                </ul>
+            </div>
+            <div class="timeline-item">
+                <h3>Onboarding templates</h3>
+                <ul>
+                    <li>5 persona-based starter prompts</li>
+                    <li>Reduces "blank page" problem</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 13: 60 DAYS -->
+    <section class="slide">
+        <h2 class="reveal">60 Days: Make Discovery Effortless</h2>
+        <p class="reveal"><strong>Problem:</strong> Officers don't know which AIBots exist or which ones are high-quality</p>
+        <div class="timeline reveal">
+            <div class="timeline-item">
+                <h3>AIBot Marketplace (MVP)</h3>
+                <ul>
+                    <li>Curated directory of top 50 AIBots by use case</li>
+                    <li>Show: Creator, use case, # of users, avg rating</li>
+                    <li>Filter by: Agency, function, task type</li>
+                </ul>
+            </div>
+            <div class="timeline-item">
+                <h3>Quality signals</h3>
+                <ul>
+                    <li>"Verified" badge for tested AIBots</li>
+                    <li>Usage stats: "Used by 200+ officers across 15 agencies"</li>
+                </ul>
+            </div>
+            <div class="timeline-item">
+                <h3>Personalized recommendations</h3>
+                <ul>
+                    <li>"Officers in your agency are using these AIBots"</li>
+                    <li>Based on: Agency, job function, similar behavior</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 14: 90 DAYS -->
+    <section class="slide">
+        <h2 class="reveal">90 Days: Make Adoption Compounding</h2>
+        <p class="reveal"><strong>Problem:</strong> Individual adoption doesn't spread to teams</p>
+        <div class="timeline reveal">
+            <div class="timeline-item">
+                <h3>Team-level visibility (without surveillance)</h3>
+                <ul>
+                    <li>Agency dashboard: "Top 10 AIBots used in your agency"</li>
+                    <li>"Common prompts" library from high-performing users</li>
+                </ul>
+            </div>
+            <div class="timeline-item">
+                <h3>Onboarding kits by agency</h3>
+                <ul>
+                    <li>Partner with 5 agencies with low adoption (<50%)</li>
+                    <li>Agency-specific starter packs</li>
+                    <li>30-min "Pair Chat Office Hours"</li>
+                </ul>
+            </div>
+            <div class="timeline-item">
+                <h3>Measure compounding</h3>
+                <ul>
+                    <li>Track: % discovering via colleague recommendation</li>
+                    <li>Track: % of AIBots shared across teams</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 15: WHAT I'M NOT DOING -->
+    <section class="slide">
+        <h2 class="reveal">What I'm NOT Doing (and Why)</h2>
+        <div class="callout warning reveal">
+            <h3>Not Doing:</h3>
+            <ul>
+                <li>❌ New features (e.g., Pair Scribe, new integrations)</li>
+                <li>❌ Model upgrades (Claude Sonnet 4 is already strong)</li>
+                <li>❌ Expanding to citizen-facing use cases</li>
+            </ul>
+        </div>
+        <div class="reveal" style="margin-top: 2rem;">
+            <h3>Why:</h3>
+            <p>The bottleneck is <strong>adoption</strong>, not <strong>capability</strong>. New features add complexity before we've nailed the core loop. Focus beats breadth in the next 90 days.</p>
+        </div>
+        <div class="callout info reveal">
+            <h3>When I'd Revisit:</h3>
+            <ul>
+                <li>If activation rate hits 70%+ (trust problem solved)</li>
+                <li>If AIBot marketplace shows clear demand for missing capabilities</li>
+                <li>If case studies reveal capability gaps</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- SLIDE 16: THE CLOSE -->
+    <section class="slide">
+        <h2 class="reveal">The One Thing That Matters</h2>
+        <div class="callout reveal" style="background: rgba(16, 185, 129, 0.15); border-left-width: 6px;">
+            <p style="font-size: 1.4rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1rem;">
+                Trust is the unlock.
+            </p>
+            <p style="font-size: 1.1rem;">
+                Pair Chat has proven it can create value—832,280 hours saved monthly, 20,000 AIBots, 95% compliance rates in healthcare.
+            </p>
+            <p style="font-size: 1.1rem;">
+                The next phase isn't about building more—it's about <strong>making what exists trustworthy, discoverable, and shareable</strong>.
+            </p>
+        </div>
+        <p class="reveal" style="font-size: 1.2rem; margin-top: 2rem;">
+            If we close the activation gap, we don't just add 14,000 users. We unlock <strong style="color: var(--accent-green);">network effects</strong>: more AIBots, more shared knowledge, more compounding value.
+        </p>
+        <p class="reveal" style="font-size: 1.3rem; font-weight: 600; color: var(--accent-amber); margin-top: 2rem;">
+            That's the platform play.
+        </p>
+    </section>
+
+    <!-- SLIDE 17: APPENDIX - COMPETITIVE POSITIONING -->
+    <section class="slide">
+        <h2 class="reveal">Appendix: Competitive Positioning</h2>
+        <table class="reveal">
+            <thead>
+                <tr>
+                    <th>Dimension</th>
+                    <th>Pair Chat</th>
+                    <th>ChatGPT</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Data Classification</strong></td>
+                    <td>RESTRICTED/SENSITIVE NORMAL</td>
+                    <td>Public only</td>
+                </tr>
+                <tr>
+                    <td><strong>Cost</strong></td>
+                    <td>Free</td>
+                    <td>$20/month</td>
+                </tr>
+                <tr>
+                    <td><strong>Logging</strong></td>
+                    <td>No LLM provider logging</td>
+                    <td>Logged for training</td>
+                </tr>
+                <tr>
+                    <td><strong>Context</strong></td>
+                    <td>Singapore gov-specific</td>
+                    <td>General purpose</td>
+                </tr>
+                <tr>
+                    <td><strong>Integration</strong></td>
+                    <td>Azure AD, GSIB devices</td>
+                    <td>Public access</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="reveal" style="margin-top: 2rem;">
+            <h3>Moats:</h3>
+            <ol>
+                <li><strong>Regulatory:</strong> Government data clearance (commercial tools can't match)</li>
+                <li><strong>Network effects:</strong> 20,000 AIBots create institutional knowledge</li>
+                <li><strong>Integration:</strong> Deep gov system integration</li>
+                <li><strong>Trust:</strong> Rigorous evaluation (Pair Rome suite)</li>
+            </ol>
+        </div>
+    </section>
+
+    <!-- SLIDE 18: APPENDIX - KEY METRICS -->
+    <section class="slide">
+        <h2 class="reveal">Appendix: Key Metrics Summary</h2>
+        <table class="reveal">
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Value</th>
+                    <th>Insight</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>MAU</strong></td>
+                    <td>78,517</td>
+                    <td>70% of public service</td>
+                </tr>
+                <tr>
+                    <td><strong>Registered Users</strong></td>
+                    <td>149,000</td>
+                    <td>47% activation gap</td>
+                </tr>
+                <tr>
+                    <td><strong>Hours Saved/Month</strong></td>
+                    <td>832,280</td>
+                    <td>59 min/task avg</td>
+                </tr>
+                <tr>
+                    <td><strong>Monthly Savings</strong></td>
+                    <td>$28.9M</td>
+                    <td>vs. $450K dev cost</td>
+                </tr>
+                <tr>
+                    <td><strong>AIBots Created</strong></td>
+                    <td>20,000+</td>
+                    <td>Platform signal</td>
+                </tr>
+                <tr>
+                    <td><strong>User Satisfaction</strong></td>
+                    <td>4.2/5</td>
+                    <td>Strong product-market fit</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- SLIDE 19: APPENDIX - QUESTIONS -->
+    <section class="slide">
+        <h2 class="reveal">Appendix: Questions This Raises</h2>
+        <ol class="reveal">
+            <li><strong>How do we measure the $28.9M savings claim?</strong> (Self-reported? Validated?)</li>
+            <li><strong>What's the quality distribution of 20,000 AIBots?</strong> (Top 10% vs. bottom 10%?)</li>
+            <li><strong>Why did 70,000 people register but not activate?</strong> (Need user research)</li>
+            <li><strong>What's the retention curve?</strong> (D1, D7, D30 retention rates?)</li>
+            <li><strong>How do we prevent AIBot sprawl?</strong> (Governance model?)</li>
+        </ol>
+    </section>
+
+    <script>
+        /* ===========================================
+           SLIDE PRESENTATION CONTROLLER
+           Handles navigation, animations, and interactions
+           =========================================== */
+
+        class SlidePresentation {
+            constructor() {
+                this.slides = document.querySelectorAll('.slide');
+                this.currentSlide = 0;
+                this.progressBar = document.querySelector('.progress-bar');
+                this.navDots = document.querySelector('.nav-dots');
+                
+                this.init();
+            }
+
+            init() {
+                // Create navigation dots
+                this.createNavDots();
+                
+                // Set up observers
+                this.setupIntersectionObserver();
+                
+                // Bind events
+                this.bindEvents();
+                
+                // Show first slide
+                this.slides[0].classList.add('visible');
+                this.updateProgress();
+            }
+
+            createNavDots() {
+                this.slides.forEach((slide, index) => {
+                    const dot = document.createElement('div');
+                    dot.className = 'nav-dot';
+                    if (index === 0) dot.classList.add('active');
+                    dot.addEventListener('click', () => this.goToSlide(index));
+                    this.navDots.appendChild(dot);
+                });
+            }
+
+            setupIntersectionObserver() {
+                const options = {
+                    root: null,
+                    threshold: 0.5
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            
+                            // Update current slide index
+                            const slideIndex = Array.from(this.slides).indexOf(entry.target);
+                            this.currentSlide = slideIndex;
+                            this.updateProgress();
+                            this.updateNavDots();
+                        }
+                    });
+                }, options);
+
+                this.slides.forEach(slide => observer.observe(slide));
+            }
+
+            bindEvents() {
+                // Keyboard navigation
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowRight' || e.key === ' ') {
+                        e.preventDefault();
+                        this.nextSlide();
+                    } else if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        this.prevSlide();
+                    }
+                });
+
+                // Touch/swipe support
+                let touchStartY = 0;
+                let touchEndY = 0;
+
+                document.addEventListener('touchstart', (e) => {
+                    touchStartY = e.changedTouches[0].screenY;
+                });
+
+                document.addEventListener('touchend', (e) => {
+                    touchEndY = e.changedTouches[0].screenY;
+                    this.handleSwipe();
+                });
+
+                const handleSwipe = () => {
+                    if (touchStartY - touchEndY > 50) {
+                        this.nextSlide();
+                    } else if (touchEndY - touchStartY > 50) {
+                        this.prevSlide();
+                    }
+                };
+
+                this.handleSwipe = handleSwipe;
+            }
+
+            nextSlide() {
+                if (this.currentSlide < this.slides.length - 1) {
+                    this.goToSlide(this.currentSlide + 1);
+                }
+            }
+
+            prevSlide() {
+                if (this.currentSlide > 0) {
+                    this.goToSlide(this.currentSlide - 1);
+                }
+            }
+
+            goToSlide(index) {
+                this.slides[index].scrollIntoView({ behavior: 'smooth' });
+            }
+
+            updateProgress() {
+                const progress = ((this.currentSlide + 1) / this.slides.length) * 100;
+                this.progressBar.style.width = `${progress}%`;
+            }
+
+            updateNavDots() {
+                const dots = this.navDots.querySelectorAll('.nav-dot');
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === this.currentSlide);
+                });
+            }
+        }
+
+        // Initialize presentation
+        new SlidePresentation();
+    </script>
+</body>
+</html>
