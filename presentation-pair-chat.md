@@ -1,5 +1,5 @@
 # Pair Chat: Product Introduction Presentation
-## OGP Senior Product Manager Interview
+## Product Strategy Analysis
 
 **Prepared by:** Mandl Cho  
 **Date:** January 30, 2026  
