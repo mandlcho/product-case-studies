@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Teardowns & Strategy Studies | Mandl Cho</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ===========================================
+           CSS CUSTOM PROPERTIES (THEME)
+           Matches Pair Chat presentation aesthetic
+           =========================================== */
+        :root {
+            /* Colors */
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --bg-card: #141414;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+            --accent-green: #00ff88;
+            --accent-amber: #fbbf24;
+            --accent-blue: #3b82f6;
+            --accent-red: #ef4444;
+            --border-subtle: rgba(255, 255, 255, 0.1);
+            
+            /* Typography */
+            --font-display: 'JetBrains Mono', monospace;
+            --font-body: 'IBM Plex Mono', monospace;
+            
+            /* Spacing */
+            --container-max: 1200px;
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 2rem;
+            --spacing-lg: 4rem;
+            --spacing-xl: 6rem;
+            
+            /* Animation */
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --duration-fast: 0.2s;
+            --duration-normal: 0.4s;
+            --duration-slow: 0.6s;
+        }
+        
+        /* ===========================================
+           BASE STYLES
+           =========================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Animated gradient background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(251, 191, 36, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* ===========================================
+           LAYOUT
+           =========================================== */
+        .container {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* ===========================================
+           HEADER
+           =========================================== */
+        header {
+            padding: var(--spacing-lg) 0 var(--spacing-md);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+        }
+        
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-top: var(--spacing-xs);
+        }
+        
+        .header-links {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+        
+        .header-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color var(--duration-fast);
+        }
+        
+        .header-links a:hover {
+            color: var(--accent-green);
+        }
+        
+        /* ===========================================
+           MAIN CONTENT
+           =========================================== */
+        main {
+            padding: var(--spacing-xl) 0;
+        }
+        
+        .intro {
+            max-width: 700px;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .intro p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        
+        /* ===========================================
+           PROJECT GRID
+           =========================================== */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+        
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+            transition: all var(--duration-normal) var(--ease-out-expo);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-blue));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform var(--duration-normal) var(--ease-out-expo);
+        }
+        
+        .project-card:hover {
+            border-color: var(--accent-green);
+            transform: translateY(-4px);
+        }
+        
+        .project-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .project-card h2 {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .project-status {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--accent-green);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+        
+        .project-meta {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            font-size: 0.8rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-subtle);
+        }
+        
+        .project-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: var(--spacing-md);
+            line-height: 1.6;
+        }
+        
+        .project-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+            padding: var(--spacing-sm);
+            background: var(--bg-secondary);
+            border-radius: 4px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent-green);
+        }
+        
+        .stat-label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+        
+        .project-links {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all var(--duration-fast);
+            border: 1px solid;
+        }
+        
+        .btn-primary {
+            background: var(--accent-green);
+            color: var(--bg-primary);
+            border-color: var(--accent-green);
+        }
+        
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--accent-green);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border-color: var(--border-subtle);
+        }
+        
+        .btn-secondary:hover {
+            color: var(--text-primary);
+            border-color: var(--text-secondary);
+        }
+        
+        /* ===========================================
+           FOOTER
+           =========================================== */
+        footer {
+            padding: var(--spacing-lg) 0;
+            border-top: 1px solid var(--border-subtle);
+            margin-top: var(--spacing-xl);
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+        }
+        
+        .footer-content p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+        
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color var(--duration-fast);
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent-green);
+        }
+        
+        /* ===========================================
+           RESPONSIVE
+           =========================================== */
+        @media (max-width: 768px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .project-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content,
+            .footer-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+        
+        /* ===========================================
+           ANIMATIONS
+           =========================================== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .project-card {
+            animation: fadeInUp var(--duration-slow) var(--ease-out-expo) backwards;
+        }
+        
+        .project-card:nth-child(1) { animation-delay: 0.1s; }
+        .project-card:nth-child(2) { animation-delay: 0.2s; }
+        .project-card:nth-child(3) { animation-delay: 0.3s; }
+        .project-card:nth-child(4) { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div>
+                    <h1>Product Teardowns & Strategy Studies</h1>
+                    <p class="subtitle">by Mandl Cho</p>
+                </div>
+                <nav class="header-links">
+                    <a href="https://github.com/mandlcho/ogp-product-teardowns" target="_blank">GitHub</a>
+                    <a href="https://linkedin.com/in/mandlcho" target="_blank">LinkedIn</a>
+                </nav>
+            </div>
+        </header>
+        
+        <main>
+            <div class="intro">
+                <p>Deep-dive product analyses, strategic recommendations, and execution plans for government tech products. Each teardown includes user research, data analysis, and actionable 30/60/90 day roadmaps.</p>
+            </div>
+            
+            <div class="projects-grid">
+                <!-- Pair Chat Project -->
+                <article class="project-card">
+                    <div class="project-header">
+                        <h2>Pair Chat</h2>
+                        <span class="project-status">Complete</span>
+                    </div>
+                    
+                    <div class="project-meta">
+                        <span class="tag">Gov Tech</span>
+                        <span class="tag">AI Assistant</span>
+                        <span class="tag">Singapore</span>
+                    </div>
+                    
+                    <p class="project-description">
+                        Singapore's government AI assistant with 78K MAU. Analysis of 47% activation gap and strategic plan to unlock $8.7M in untapped monthly productivity value.
+                    </p>
+                    
+                    <div class="project-stats">
+                        <div class="stat">
+                            <span class="stat-value">78.5K</span>
+                            <span class="stat-label">MAU</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">47%</span>
+                            <span class="stat-label">Activation Gap</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">20K+</span>
+                            <span class="stat-label">User AIBots</span>
+                        </div>
+                    </div>
+                    
+                    <div class="project-links">
+                        <a href="projects/pair-chat/presentation.html" class="btn btn-primary">View Presentation</a>
+                        <a href="projects/pair-chat/teardown.md" class="btn btn-secondary">Read Teardown</a>
+                    </div>
+                </article>
+                
+                <!-- Pair Search Project -->
+                <article class="project-card">
+                    <div class="project-header">
+                        <h2>Pair Search</h2>
+                        <span class="project-status">Complete</span>
+                    </div>
+                    
+                    <div class="project-meta">
+                        <span class="tag">Gov Tech</span>
+                        <span class="tag">Search</span>
+                        <span class="tag">Singapore</span>
+                    </div>
+                    
+                    <p class="project-description">
+                        Legislative research tool for Singapore government officers. Analysis of search patterns, user needs, and opportunities for improvement.
+                    </p>
+                    
+                    <div class="project-links">
+                        <a href="teardowns/2026-01-28__ogp__pair-search.md" class="btn btn-secondary">Read Teardown</a>
+                    </div>
+                </article>
+                
+                <!-- RedeemSG Voucher Quick Access -->
+                <article class="project-card">
+                    <div class="project-header">
+                        <h2>RedeemSG: Voucher Quick Access</h2>
+                        <span class="project-status">Complete</span>
+                    </div>
+                    
+                    <div class="project-meta">
+                        <span class="tag">Gov Tech</span>
+                        <span class="tag">Consumer</span>
+                        <span class="tag">Singapore</span>
+                    </div>
+                    
+                    <p class="project-description">
+                        One-page PM pitch for improving voucher redemption UX. Strategic analysis of user friction points and proposed solutions.
+                    </p>
+                    
+                    <div class="project-links">
+                        <a href="teardowns/2026-01-28__ogp__redeemsg__voucher-quick-access__one-page-pm-pitch.md" class="btn btn-secondary">Read Pitch</a>
+                    </div>
+                </article>
+            </div>
+        </main>
+        
+        <footer>
+            <div class="footer-content">
+                <p>&copy; 2026 Mandl Cho. All teardowns and analyses.</p>
+                <nav class="footer-links">
+                    <a href="README.md">About</a>
+                    <a href="tracker.md">Tracker</a>
+                    <a href="https://github.com/mandlcho/ogp-product-teardowns" target="_blank">Source</a>
+                </nav>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
