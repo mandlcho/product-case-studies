@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RedeemSG: Trust Crisis</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+    <style>
+        /* ===========================================
+           REDEEMSG PRESENTATION
+           Style: Product Focused (Monospace)
+           Animated gradient backgrounds
+           =========================================== */
+        :root {
+            --bg-primary: #0f172a;
+            --bg-gradient-start: #1e293b;
+            --bg-gradient-end: #0f172a;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #64748b;
+            --accent-green: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-blue: #3b82f6;
+            --accent-red: #ef4444;
+            
+            --font-display: 'JetBrains Mono', monospace;
+            --font-body: 'IBM Plex Mono', monospace;
+            
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-snap-type: y mandatory;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ===========================================
+           ANIMATED GRADIENT ORBS
+           =========================================== */
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.2;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::before {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--accent-green) 0%, transparent 70%);
+            top: -150px;
+            right: -150px;
+            animation: float-orb-1 25s ease-in-out infinite;
+        }
+
+        body::after {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--accent-amber) 0%, transparent 70%);
+            bottom: -100px;
+            left: -100px;
+            animation: float-orb-2 30s ease-in-out infinite;
+        }
+
+        @keyframes float-orb-1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(80px, 120px) scale(1.15); }
+            50% { transform: translate(-50px, 80px) scale(0.9); }
+            75% { transform: translate(40px, -60px) scale(1.05); }
+        }
+
+        @keyframes float-orb-2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(-70px, -100px) scale(1.2); }
+            50% { transform: translate(60px, -50px) scale(0.95); }
+            75% { transform: translate(-40px, 70px) scale(1.1); }
+        }
+
+        /* ===========================================
+           PROGRESS BAR
+           =========================================== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent-green);
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.3s ease;
+        }
+
+        /* ===========================================
+           NAVIGATION DOTS
+           =========================================== */
+        .nav-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s var(--ease-out-expo);
+            border: 2px solid transparent;
+            opacity: 0.5;
+        }
+
+        .nav-dot:hover {
+            background: var(--text-secondary);
+            transform: scale(1.3);
+            opacity: 0.7;
+        }
+
+        .nav-dot.active {
+            background: var(--accent-green);
+            transform: scale(1.5);
+            box-shadow: 0 0 12px var(--accent-green);
+            opacity: 1;
+        }
+
+        /* ===========================================
+           SLIDE CONTAINER
+           =========================================== */
+        .slide {
+            min-height: 100vh;
+            padding: clamp(2rem, 5vw, 4rem);
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* ===========================================
+           TYPOGRAPHY
+           =========================================== */
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        h1::before {
+            content: '> ';
+            color: var(--accent-green);
+            opacity: 0.8;
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+        }
+
+        h2::before {
+            content: '// ';
+            color: var(--accent-blue);
+            opacity: 0.6;
+            font-size: 0.8em;
+        }
+
+        h3 {
+            font-family: var(--font-display);
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--accent-amber);
+        }
+
+        p {
+            font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* ===========================================
+           TITLE SLIDE
+           =========================================== */
+        .title-slide {
+            text-align: left;
+        }
+
+        .title-slide h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            padding-left: 2rem;
+            border-left: 3px solid var(--accent-blue);
+            line-height: 1.6;
+        }
+
+        .meta {
+            font-size: 1rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--accent-amber);
+        }
+
+        .meta::before {
+            content: '●';
+            color: var(--accent-green);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* ===========================================
+           METRICS GRID
+           =========================================== */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .metric {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .metric-value {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* ===========================================
+           LISTS
+           =========================================== */
+        ul, ol {
+            margin: 1.5rem 0;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        li {
+            margin-bottom: 1.5rem;
+            padding-left: 2rem;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        ul li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent-green);
+            font-weight: bold;
+        }
+
+        ol {
+            counter-reset: item;
+        }
+
+        ol li::before {
+            content: counter(item) '.';
+            counter-increment: item;
+            position: absolute;
+            left: 0;
+            color: var(--accent-amber);
+            font-weight: 600;
+            font-family: var(--font-display);
+        }
+
+        /* ===========================================
+           CALLOUT BOXES
+           =========================================== */
+        .callout {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--accent-green);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+        }
+
+        .callout.warning {
+            background: rgba(245, 158, 11, 0.1);
+            border-left-color: var(--accent-amber);
+        }
+
+        .callout.info {
+            background: rgba(59, 130, 246, 0.1);
+            border-left-color: var(--accent-blue);
+        }
+
+        .callout.danger {
+            background: rgba(239, 68, 68, 0.1);
+            border-left-color: var(--accent-red);
+        }
+
+        /* ===========================================
+           TABLES
+           =========================================== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            font-weight: 600;
+            color: var(--accent-amber);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        td {
+            color: var(--text-secondary);
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* ===========================================
+           TIMELINE
+           =========================================== */
+        .timeline {
+            margin: 2rem 0;
+        }
+
+        .timeline-item {
+            margin-bottom: 3rem;
+            padding-left: 3rem;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 1.5rem;
+            width: 2px;
+            height: calc(100% + 1rem);
+            background: rgba(16, 185, 129, 0.2);
+        }
+
+        .timeline-item:last-child::after {
+            display: none;
+        }
+
+        /* ===========================================
+           ANIMATIONS
+           =========================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s var(--ease-out-expo),
+                        transform 0.7s var(--ease-out-expo);
+        }
+
+        .slide.visible .reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal:nth-child(1) { transition-delay: 0.1s; }
+        .reveal:nth-child(2) { transition-delay: 0.2s; }
+        .reveal:nth-child(3) { transition-delay: 0.3s; }
+        .reveal:nth-child(4) { transition-delay: 0.4s; }
+        .reveal:nth-child(5) { transition-delay: 0.5s; }
+        .reveal:nth-child(6) { transition-delay: 0.6s; }
+
+        /* ===========================================
+           KEYBOARD HINT
+           =========================================== */
+        .keyboard-hint {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            z-index: 100;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .key {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+        }
+
+        /* ===========================================
+           RESPONSIVE
+           =========================================== */
+        @media (max-width: 768px) {
+            .nav-dots,
+            .keyboard-hint {
+                display: none;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            body::before,
+            body::after {
+                opacity: 0.1;
+            }
+        }
+
+        /* ===========================================
+           REDUCED MOTION
+           =========================================== */
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            .reveal {
+                transition: opacity 0.3s ease;
+                transform: none;
+            }
+
+            body::before,
+            body::after {
+                animation: none;
+            }
+
+            .meta::before {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress bar -->
+    <div class="progress-bar"></div>
+
+    <!-- Navigation dots -->
+    <nav class="nav-dots" aria-label="Slide navigation">
+        <!-- Generated by JS -->
+    </nav>
+
+    <!-- Keyboard hint -->
+    <div class="keyboard-hint">
+        <span>Navigate: <span class="key">←</span> <span class="key">→</span> or <span class="key">Space</span></span>
+    </div>
+
+    <!-- SLIDE 1: TITLE -->
+    <section class="slide title-slide">
+        <h1 class="reveal">RedeemSG: Trust Crisis</h1>
+        <p class="reveal subtitle">From Phishing Attack to Trust Recovery</p>
+        <p class="reveal meta">Mandl Cho • January 2026</p>
+    </section>
+
+    <!-- SLIDE 2: THE HOOK -->
+    <section class="slide">
+        <h2 class="reveal">The Hook</h2>
+        <div class="callout reveal">
+            <p style="font-size: 1.3rem; font-weight: 600; color: var(--text-primary);">
+                "$1.97B processed. 140M transactions. $288M in Q3 2025 alone."
+            </p>
+        </div>
+        <p class="reveal">RedeemSG is Singapore's national voucher platform—handling billions in government disbursements. The infrastructure works flawlessly.</p>
+        <div class="callout danger reveal">
+            <p style="font-weight: 600;">But consumer satisfaction: <strong style="color: var(--accent-red); font-size: 1.4rem;">3.1/5</strong></p>
+            <p style="margin-top: 1rem;">Meanwhile, merchant satisfaction: <strong style="color: var(--accent-green); font-size: 1.4rem;">4.2/5</strong></p>
+        </div>
+        <p class="reveal" style="font-size: 1.2rem; font-weight: 600; margin-top: 2rem;">This isn't a product failure—it's a <strong style="color: var(--accent-red);">trust crisis</strong>.</p>
+    </section>
+
+    <!-- SLIDE 3: THE PARADOX -->
+    <section class="slide">
+        <h2 class="reveal">The Paradox</h2>
+        <div class="metrics-grid reveal">
+            <div class="metric">
+                <span class="metric-value">$1.97B</span>
+                <span class="metric-label">Total Processed</span>
+            </div>
+            <div class="metric">
+                <span class="metric-value">140M</span>
+                <span class="metric-label">Transactions</span>
+            </div>
+            <div class="metric">
+                <span class="metric-value">$288M</span>
+                <span class="metric-label">Q3 2025</span>
+            </div>
+        </div>
+        <div class="reveal" style="margin-top: 3rem;">
+            <h3>The Product Works</h3>
+            <p>Infrastructure is solid. Transactions process smoothly. Merchants love it (4.2/5).</p>
+        </div>
+        <div class="reveal" style="margin-top: 2rem;">
+            <h3>But Trust is Broken</h3>
+            <p>Consumer rating: 3.1/5. The gap isn't capability—it's <strong>confidence</strong>.</p>
+        </div>
+    </section>
+
+    <!-- SLIDE 4: WHAT HAPPENED -->
+    <section class="slide">
+        <h2 class="reveal">What Happened: Jan 2025 Phishing Crisis</h2>
+        <table class="reveal">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Event</th>
+                    <th>Impact</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Jan 3, 2025</strong></td>
+                    <td>CDC voucher disbursement announced</td>
+                    <td>High-value target for scammers</td>
+                </tr>
+                <tr>
+                    <td><strong>Jan 10-17</strong></td>
+                    <td>Fake RedeemSG websites appear</td>
+                    <td>Unsolicited SMS + Instagram posts</td>
+                </tr>
+                <tr>
+                    <td><strong>Jan 17</strong></td>
+                    <td>SPF issues first advisory</td>
+                    <td>Public awareness, trust damaged</td>
+                </tr>
+                <tr>
+                    <td><strong>Jan-Feb</strong></td>
+                    <td>Multiple SPF advisories continue</td>
+                    <td>Ongoing threat, no OGP response</td>
+                </tr>
+                <tr>
+                    <td><strong>Present</strong></td>
+                    <td>Consumer satisfaction: 3.1/5</td>
+                    <td>Trust erosion despite product working</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- SLIDE 5: THE SCAM MECHANICS -->
+    <section class="slide">
+        <h2 class="reveal">The Scam Mechanics</h2>
+        <div class="reveal">
+            <h3>How the Attack Worked:</h3>
+            <ol>
+                <li>Scammers create counterfeit RedeemSG websites (domain spoofing)</li>
+                <li>Unsolicited SMS: "Claim your CDC vouchers now!"</li>
+                <li>Instagram infographics mimicking official government design</li>
+                <li>Fake sites ask for banking credentials + personal details</li>
+                <li>Victims unknowingly hand over sensitive information</li>
+            </ol>
+        </div>
+        <div class="callout warning reveal" style="margin-top: 2rem;">
+            <p style="font-weight: 600;">Why It Worked:</p>
+            <ul style="margin-top: 1rem;">
+                <li>High-stakes policy moment (CDC vouchers = money)</li>
+                <li>Government branding easy to replicate</li>
+                <li>Users unfamiliar with official redemption flow</li>
+                <li><strong>No proactive education from OGP on "how to spot fakes"</strong></li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- SLIDE 6: THE FOUR PROBLEMS -->
+    <section class="slide">
+        <h2 class="reveal">The Four Problems</h2>
+        <div class="reveal">
+            <h3 style="color: var(--accent-red);">Problem 1: Phishing Exposure</h3>
+            <p>Fake sites, SMS scams, Instagram posts—external threats that OGP can't directly control.</p>
+        </div>
+        <div class="reveal">
+            <h3 style="color: var(--accent-red);">Problem 2: OGP's Reactive Response</h3>
+            <p>SPF issued advisories. OGP stayed silent. Users felt abandoned.</p>
+        </div>
+        <div class="reveal">
+            <h3 style="color: var(--accent-red);">Problem 3: Login Friction</h3>
+            <p>Every time users need RedeemSG: hunt for link → relogin with Singpass → wait for 2FA → finally start using. <strong>3-5 minutes of friction per use.</strong></p>
+        </div>
+        <div class="reveal">
+            <h3 style="color: var(--accent-red);">Problem 4: Positioning Mismatch</h3>
+            <p>Positioned as consumer product (app store, branding) but treated as policy infrastructure (no trust investment).</p>
+        </div>
+    </section>
+
+    <!-- SLIDE 7: LOGIN FRICTION DEEP DIVE -->
+    <section class="slide">
+        <h2 class="reveal">Problem 3: Login Friction Kills Adoption</h2>
+        <div class="callout danger reveal">
+            <p style="font-style: italic; font-size: 1.3rem; line-height: 1.6;">
+                "Every time I need to use RedeemSG, I have to:<br>
+                1. Hunt for the link (where did I save it?)<br>
+                2. Relogin with Singpass<br>
+                3. Wait for 2FA<br>
+                4. Finally start using"
+            </p>
+        </div>
+        <p class="reveal" style="margin-top: 2rem; font-size: 1.2rem;">This 3-5 minute friction happens <strong>EVERY TIME</strong>.</p>
+        <p class="reveal" style="font-size: 1.1rem;">For a tool used monthly (voucher redemption), this is a <strong style="color: var(--accent-red);">massive adoption barrier</strong>.</p>
+        <div class="callout warning reveal" style="margin-top: 2rem;">
+            <p style="font-weight: 600;">Why This Matters:</p>
+            <ul style="margin-top: 1rem;">
+                <li><strong>Compounding friction:</strong> Trust crisis + login friction = double barrier</li>
+                <li><strong>Monthly use case:</strong> Users forget the link between uses</li>
+                <li><strong>Singpass overhead:</strong> 2FA adds 2-3 minutes every time</li>
+                <li><strong>Mobile-first:</strong> Link hunting is harder on mobile</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- SLIDE 8: ROOT CAUSE -->
+    <section class="slide">
+        <h2 class="reveal">Root Cause: 5 Whys</h2>
+        <div class="timeline reveal">
+            <div class="timeline-item">
+                <h3>1. Why did users lose trust in RedeemSG?</h3>
+                <p>Because they saw multiple police advisories about fake RedeemSG sites.</p>
+            </div>
+            <div class="timeline-item">
+                <h3>2. Why did police advisories damage trust?</h3>
+                <p>Because users couldn't distinguish real from fake sites.</p>
+            </div>
+            <div class="timeline-item">
+                <h3>3. Why couldn't users distinguish real from fake?</h3>
+                <p>Because OGP never proactively educated users on "how to identify the official site."</p>
+            </div>
+            <div class="timeline-item">
+                <h3>4. Why didn't OGP educate users proactively?</h3>
+                <p>Because OGP's response was reactive (waiting for SPF advisories) instead of proactive.</p>
+            </div>
+            <div class="timeline-item">
+                <h3>5. Why was OGP's response reactive?</h3>
+                <p><strong style="color: var(--accent-red);">Because RedeemSG is positioned as a consumer product (requiring brand protection) but treated as policy infrastructure (no dedicated comms/trust team).</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 9: MERCHANT VS CONSUMER GAP -->
+    <section class="slide">
+        <h2 class="reveal">The Merchant vs Consumer Gap</h2>
+        <table class="reveal">
+            <thead>
+                <tr>
+                    <th>Factor</th>
+                    <th>Merchant (4.2/5)</th>
+                    <th>Consumer (3.1/5)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Use Case</strong></td>
+                    <td>Scan QR, confirm transaction</td>
+                    <td>Claim vouchers, find merchants</td>
+                </tr>
+                <tr>
+                    <td><strong>Relationship</strong></td>
+                    <td>B2B (training provided)</td>
+                    <td>B2C (no training)</td>
+                </tr>
+                <tr>
+                    <td><strong>Phishing Exposure</strong></td>
+                    <td>Low (in-person transactions)</td>
+                    <td>High (SMS scams, fake sites)</td>
+                </tr>
+                <tr>
+                    <td><strong>Expectations</strong></td>
+                    <td>Tool for business operations</td>
+                    <td>Secure, trustworthy platform</td>
+                </tr>
+                <tr>
+                    <td><strong>Support</strong></td>
+                    <td>Dedicated merchant support</td>
+                    <td>Generic FAQs, no proactive comms</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="callout reveal" style="margin-top: 2rem;">
+            <p style="font-weight: 600; font-size: 1.2rem;">The 1.1 point gap isn't about product quality—it's about <strong style="color: var(--accent-green);">trust infrastructure</strong>.</p>
+        </div>
+    </section>
+
+    <!-- SLIDE 10: WHAT OGP DID WRONG -->
+    <section class="slide">
+        <h2 class="reveal">What OGP Did Wrong</h2>
+        <div class="reveal">
+            <h3>1. Reactive, Not Proactive</h3>
+            <ul>
+                <li>SPF issued advisories (Jan 17, Feb 14)</li>
+                <li>OGP stayed silent (no counter-messaging)</li>
+                <li>Users left to figure out "real vs fake" on their own</li>
+            </ul>
+        </div>
+        <div class="reveal">
+            <h3>2. No Security Education</h3>
+            <ul>
+                <li>No in-app onboarding: "How to spot fake redemption sites"</li>
+                <li>No visual guide: "Official site vs fake site comparison"</li>
+                <li>No SMS verification: "We will NEVER ask for banking details"</li>
+                <li>No trust signals: "Look for .gov.sg domain"</li>
+            </ul>
+        </div>
+        <div class="reveal">
+            <h3>3. Positioning Confusion</h3>
+            <p>You can't position as a consumer product without investing in consumer trust infrastructure.</p>
+        </div>
+    </section>
+
+    <!-- SLIDE 11: 30 DAY PLAN OVERVIEW -->
+    <section class="slide">
+        <h2 class="reveal">30 Days: Stop the Bleeding</h2>
+        <p class="reveal"><strong>Goal:</strong> Shift sentiment from "worried" to "informed"</p>
+        <div class="timeline reveal">
+            <div class="timeline-item">
+                <h3>In-App Security Education</h3>
+                <p>First login flow: "How to stay safe on RedeemSG"</p>
+                <ul>
+                    <li>Official site: vouchers.gov.sg/redeem</li>
+                    <li>Look for .gov.sg in URL</li>
+                    <li>We will NEVER ask for banking passwords</li>
+                </ul>
+            </div>
+            <div class="timeline-item">
+                <h3>Public Statement</h3>
+                <p>OGP blog + social: "How to Identify the Real RedeemSG"</p>
+                <p>Distribution: OGP blog, RedeemSG app banner, Gov.sg WhatsApp, SPF partnership</p>
+            </div>
+            <div class="timeline-item">
+                <h3>SMS All Users</h3>
+                <p>"Official RedeemSG will NEVER ask for passwords. Bookmark vouchers.gov.sg/redeem"</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 12: 30 DAY PLAN - LOGIN FRICTION FIX -->
+    <section class="slide">
+        <h2 class="reveal">30 Days: Fix Login Friction</h2>
+        <div class="callout reveal">
+            <h3>Immediate Wins:</h3>
+            <ul>
+                <li><strong>Bookmark prompt on first visit:</strong> "Add this page to your home screen for quick access"</li>
+                <li><strong>Persistent login (30-day session):</strong> Stop forcing relogin every time</li>
+                <li><strong>go.gov.sg/my-vouchers permanent URL:</strong> Easy to remember, always works</li>
+                <li><strong>Quick access widget in LifeSG:</strong> One tap from existing gov app</li>
+            </ul>
+        </div>
+        <div class="metrics-grid reveal" style="margin-top: 2rem;">
+            <div class="metric">
+                <span class="metric-value">3-5 min</span>
+                <span class="metric-label">Current Friction</span>
+            </div>
+            <div class="metric">
+                <span class="metric-value">→</span>
+                <span class="metric-label"></span>
+            </div>
+            <div class="metric">
+                <span class="metric-value">30 sec</span>
+                <span class="metric-label">Target Friction</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 13: 60 DAY PLAN -->
+    <section class="slide">
+        <h2 class="reveal">60 Days: Build Trust Infrastructure</h2>
+        <p class="reveal"><strong>Goal:</strong> Make security visible and proactive</p>
+        <div class="timeline reveal">
+            <div class="timeline-item">
+                <h3>Visual Trust Signals</h3>
+                <ul>
+                    <li>Badge: "Official Government Site" (with .gov.sg verification)</li>
+                    <li>Security center: "How to spot fakes" + "Report a scam"</li>
+                    <li>Visual comparison: Real vs fake site screenshots</li>
+                </ul>
+            </div>
+            <div class="timeline-item">
+                <h3>Merchant Partnership</h3>
+                <ul>
+                    <li>Merchants display: "Redeem safely at vouchers.gov.sg/redeem"</li>
+                    <li>Physical signage at participating stores</li>
+                    <li>Leverages merchant trust (4.2/5 rating)</li>
+                </ul>
+            </div>
+            <div class="timeline-item">
+                <h3>SPF Joint Campaign</h3>
+                <ul>
+                    <li>Co-branded messaging: "SPF + OGP: How to Stay Safe"</li>
+                    <li>Legitimizes OGP's security efforts</li>
+                    <li>Shares responsibility for trust recovery</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 14: 90 DAY PLAN -->
+    <section class="slide">
+        <h2 class="reveal">90 Days: Reposition as Infrastructure</h2>
+        <p class="reveal"><strong>Strategic Decision:</strong> Stop treating consumer side as a product. Treat it as <strong>policy delivery infrastructure</strong>.</p>
+        <table class="reveal">
+            <thead>
+                <tr>
+                    <th>Aspect</th>
+                    <th>Current (Product)</th>
+                    <th>Future (Infrastructure)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Presence</strong></td>
+                    <td>App store presence</td>
+                    <td>Embedded in LifeSG/Gov.sg</td>
+                </tr>
+                <tr>
+                    <td><strong>Metrics</strong></td>
+                    <td>Consumer NPS tracking</td>
+                    <td>Uptime + transaction success rate</td>
+                </tr>
+                <tr>
+                    <td><strong>Marketing</strong></td>
+                    <td>Brand marketing</td>
+                    <td>Functional communication only</td>
+                </tr>
+                <tr>
+                    <td><strong>Support</strong></td>
+                    <td>Self-service FAQs</td>
+                    <td>Merchant-focused support</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="callout reveal" style="margin-top: 2rem;">
+            <p style="font-weight: 600;">Precedent: GoWhere (61M visits, 100% uptime, no NPS tracking—success = availability)</p>
+        </div>
+    </section>
+
+    <!-- SLIDE 15: SUCCESS METRICS -->
+    <section class="slide">
+        <h2 class="reveal">Success Metrics</h2>
+        <div class="reveal">
+            <h3>Leading Indicators (30 Days)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Baseline</th>
+                        <th>Target</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>In-app security education completion</td>
+                        <td>0%</td>
+                        <td>70%</td>
+                    </tr>
+                    <tr>
+                        <td>"Security concern" in app reviews</td>
+                        <td>High</td>
+                        <td>-30%</td>
+                    </tr>
+                    <tr>
+                        <td>Blog post views</td>
+                        <td>0</td>
+                        <td>10K+</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="reveal" style="margin-top: 2rem;">
+            <h3>Lagging Indicators (90 Days)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Baseline</th>
+                        <th>Target</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Consumer app rating</td>
+                        <td>3.1/5</td>
+                        <td>3.5/5</td>
+                    </tr>
+                    <tr>
+                        <td>Merchant app rating</td>
+                        <td>4.2/5</td>
+                        <td>4.5/5</td>
+                    </tr>
+                    <tr>
+                        <td>Phishing report volume (SPF)</td>
+                        <td>High</td>
+                        <td>-50%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- SLIDE 16: KEY INSIGHT 1 -->
+    <section class="slide">
+        <h2 class="reveal">Key Insight 1: The Product Works—Trust Doesn't</h2>
+        <div class="metrics-grid reveal">
+            <div class="metric">
+                <span class="metric-value">$1.97B</span>
+                <span class="metric-label">Processed</span>
+            </div>
+            <div class="metric">
+                <span class="metric-value">140M</span>
+                <span class="metric-label">Transactions</span>
+            </div>
+            <div class="metric">
+                <span class="metric-value">4.2/5</span>
+                <span class="metric-label">Merchant Rating</span>
+            </div>
+        </div>
+        <div class="callout reveal" style="margin-top: 3rem;">
+            <p style="font-size: 1.3rem; font-weight: 600; line-height: 1.6;">
+                This isn't a product problem. It's a <strong style="color: var(--accent-red);">communication and positioning problem</strong>.
+            </p>
+        </div>
+        <p class="reveal" style="margin-top: 2rem; font-size: 1.1rem;">The infrastructure handles billions without issues. The brand took damage from external threats.</p>
+    </section>
+
+    <!-- SLIDE 17: KEY INSIGHT 2 -->
+    <section class="slide">
+        <h2 class="reveal">Key Insight 2: Reactive ≠ Responsible</h2>
+        <div class="reveal">
+            <h3>What Happened:</h3>
+            <ul>
+                <li>SPF issued advisories (reactive)</li>
+                <li>OGP stayed silent (passive)</li>
+                <li>Users felt abandoned</li>
+            </ul>
+        </div>
+        <div class="reveal" style="margin-top: 2rem;">
+            <h3>What Users Needed:</h3>
+            <ul>
+                <li>Proactive education: "How to stay safe"</li>
+                <li>Visible response: "We've got your back"</li>
+                <li>Trust signals: "This is the official site"</li>
+            </ul>
+        </div>
+        <div class="callout warning reveal" style="margin-top: 2rem;">
+            <p style="font-weight: 600; font-size: 1.2rem;">In a trust crisis, silence = complicity. Users need to see you fighting for them.</p>
+        </div>
+    </section>
+
+    <!-- SLIDE 18: KEY INSIGHT 3 -->
+    <section class="slide">
+        <h2 class="reveal">Key Insight 3: Merchant Side Proves the Model</h2>
+        <div class="reveal">
+            <h3>Why Merchant Works (4.2/5):</h3>
+            <ul>
+                <li>B2B relationship (training + support)</li>
+                <li>Simple use case (scan QR, confirm)</li>
+                <li>Low phishing exposure (in-person)</li>
+            </ul>
+        </div>
+        <div class="callout reveal" style="margin-top: 3rem;">
+            <p style="font-size: 1.3rem; font-weight: 600; line-height: 1.6;">
+                <strong style="color: var(--accent-green);">Opportunity:</strong> Double down on merchant experience. Let consumer side be policy infrastructure.
+            </p>
+        </div>
+    </section>
+
+    <!-- SLIDE 19: KEY INSIGHT 4 -->
+    <section class="slide">
+        <h2 class="reveal">Key Insight 4: Positioning Mismatch Kills Trust</h2>
+        <div class="callout danger reveal">
+            <h3>The Trap:</h3>
+            <ul>
+                <li>Positioned as consumer product (app store, branding)</li>
+                <li>Treated as policy infrastructure (no trust investment)</li>
+                <li>Result: Unrealistic expectations, no resources to meet them</li>
+            </ul>
+        </div>
+        <div class="callout reveal" style="margin-top: 2rem;">
+            <h3>The Fix:</h3>
+            <p style="font-size: 1.2rem; font-weight: 600;">Either invest in consumer trust infrastructure OR reposition as backend infrastructure (like Singpass).</p>
+        </div>
+    </section>
+
+    <!-- SLIDE 20: THE PATH FORWARD -->
+    <section class="slide">
+        <h2 class="reveal">The Path Forward</h2>
+        <div class="timeline reveal">
+            <div class="timeline-item">
+                <h3>Short-term (30 days): Stop the Bleeding</h3>
+                <ul>
+                    <li>In-app security education</li>
+                    <li>Public statement: "How to stay safe"</li>
+                    <li>SMS all users with trust message</li>
+                    <li>Fix login friction (bookmark, persistent login, LifeSG widget)</li>
+                </ul>
+            </div>
+            <div class="timeline-item">
+                <h3>Medium-term (60 days): Build Trust Infrastructure</h3>
+                <ul>
+                    <li>Visual trust signals (badges, verification)</li>
+                    <li>Merchant partnership (physical signage)</li>
+                    <li>SPF joint campaign</li>
+                </ul>
+            </div>
+            <div class="timeline-item">
+                <h3>Long-term (90 days): Reposition as Infrastructure</h3>
+                <ul>
+                    <li>Embed in LifeSG (invisible to consumer)</li>
+                    <li>Focus on merchant experience (4.2/5 → 4.5/5)</li>
+                    <li>Treat consumer side as policy delivery (uptime > NPS)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- SLIDE 21: THE BET -->
+    <section class="slide">
+        <h2 class="reveal">The Bet</h2>
+        <div class="callout reveal" style="margin-top: 4rem;">
+            <p style="font-size: 1.6rem; font-weight: 600; line-height: 1.6; color: var(--text-primary);">
+                RedeemSG becomes the <strong style="color: var(--accent-green);">"Stripe for government vouchers"</strong>—invisible infrastructure that just works.
+            </p>
+        </div>
+        <div class="reveal" style="margin-top: 3rem;">
+            <ul style="font-size: 1.1rem;">
+                <li>Merchants love it (4.5/5 target)</li>
+                <li>Consumers don't think about it (which is success)</li>
+                <li>Policy teams rely on it (100% uptime)</li>
+                <li>Trust comes from government, not the app</li>
+            </ul>
+        </div>
+        <p class="reveal" style="margin-top: 3rem; font-size: 1.2rem; font-weight: 600; color: var(--accent-amber);">
+            That's the platform play. And that's what I'd build in the next 90 days.
+        </p>
+    </section>
+
+    <script>
+        /* ===========================================
+           SLIDE PRESENTATION CONTROLLER
+           =========================================== */
+
+        class SlidePresentation {
+            constructor() {
+                this.slides = document.querySelectorAll('.slide');
+                this.currentSlide = 0;
+                this.progressBar = document.querySelector('.progress-bar');
+                this.navDots = document.querySelector('.nav-dots');
+                
+                this.init();
+            }
+
+            init() {
+                this.createNavDots();
+                this.setupIntersectionObserver();
+                this.bindEvents();
+                this.slides[0].classList.add('visible');
+                this.updateProgress();
+            }
+
+            createNavDots() {
+                this.slides.forEach((slide, index) => {
+                    const dot = document.createElement('div');
+                    dot.className = 'nav-dot';
+                    if (index === 0) dot.classList.add('active');
+                    dot.addEventListener('click', () => this.goToSlide(index));
+                    this.navDots.appendChild(dot);
+                });
+            }
+
+            setupIntersectionObserver() {
+                const options = {
+                    root: null,
+                    threshold: 0.5
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            const slideIndex = Array.from(this.slides).indexOf(entry.target);
+                            this.currentSlide = slideIndex;
+                            this.updateProgress();
+                            this.updateNavDots();
+                        }
+                    });
+                }, options);
+
+                this.slides.forEach(slide => observer.observe(slide));
+            }
+
+            bindEvents() {
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowRight' || e.key === ' ') {
+                        e.preventDefault();
+                        this.nextSlide();
+                    } else if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        this.prevSlide();
+                    }
+                });
+
+                let touchStartY = 0;
+                let touchEndY = 0;
+
+                document.addEventListener('touchstart', (e) => {
+                    touchStartY = e.changedTouches[0].screenY;
+                });
+
+                document.addEventListener('touchend', (e) => {
+                    touchEndY = e.changedTouches[0].screenY;
+                    this.handleSwipe();
+                });
+
+                const handleSwipe = () => {
+                    if (touchStartY - touchEndY > 50) {
+                        this.nextSlide();
+                    } else if (touchEndY - touchStartY > 50) {
+                        this.prevSlide();
+                    }
+                };
+
+                this.handleSwipe = handleSwipe;
+            }
+
+            nextSlide() {
+                if (this.currentSlide < this.slides.length - 1) {
+                    this.goToSlide(this.currentSlide + 1);
+                }
+            }
+
+            prevSlide() {
+                if (this.currentSlide > 0) {
+                    this.goToSlide(this.currentSlide - 1);
+                }
+            }
+
+            goToSlide(index) {
+                this.slides[index].scrollIntoView({ behavior: 'smooth' });
+            }
+
+            updateProgress() {
+                const progress = ((this.currentSlide + 1) / this.slides.length) * 100;
+                this.progressBar.style.width = `${progress}%`;
+            }
+
+            updateNavDots() {
+                const dots = this.navDots.querySelectorAll('.nav-dot');
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === this.currentSlide);
+                });
+            }
+        }
+
+        // Initialize presentation
+        new SlidePresentation();
+    </script>
+</body>
+</html>
