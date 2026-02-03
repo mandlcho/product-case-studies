@@ -1222,11 +1222,15 @@
                  <span class="nav-icon">🎯</span>
                  <span class="nav-label">Problem</span>
              </a>
-             <a href="#solution" class="floating-nav-link" title="Solution">
-                 <span class="nav-icon">💡</span>
-                 <span class="nav-label">Solution</span>
-             </a>
-             <a href="#adoption" class="floating-nav-link" title="Gap">
+              <a href="#solution" class="floating-nav-link" title="Solution">
+                  <span class="nav-icon">💡</span>
+                  <span class="nav-label">Solution</span>
+              </a>
+              <a href="#impact" class="floating-nav-link" title="Impact">
+                  <span class="nav-icon">📈</span>
+                  <span class="nav-label">Impact</span>
+              </a>
+              <a href="#adoption" class="floating-nav-link" title="Gap">
                  <span class="nav-icon">📊</span>
                  <span class="nav-label">Gap</span>
              </a>
@@ -1338,6 +1342,7 @@
              const sections = [
                  { id: 'problem', link: floatingNav.querySelector('a[href="#problem"]') },
                  { id: 'solution', link: floatingNav.querySelector('a[href="#solution"]') },
+                 { id: 'impact', link: floatingNav.querySelector('a[href="#impact"]') },
                  { id: 'adoption', link: floatingNav.querySelector('a[href="#adoption"]') },
                  { id: 'solutions', link: floatingNav.querySelector('a[href="#solutions"]') },
                  { id: 'tools', link: floatingNav.querySelector('a[href="#tools"]') },
@@ -1374,15 +1379,18 @@
              
              const highlightActiveSection = () => {
                  let currentSection = null;
-                 const scrollTop = window.scrollY + 200;
+                 const scrollTop = window.scrollY + 300; // Offset for better UX
+                 let closestDistance = Infinity;
                  
                  sections.forEach(section => {
                      const element = document.getElementById(section.id);
                      if (element) {
                          const sectionTop = element.offsetTop;
-                         const sectionBottom = sectionTop + element.offsetHeight;
+                         const distance = Math.abs(sectionTop - scrollTop);
                          
-                         if (scrollTop >= sectionTop && scrollTop < sectionBottom) {
+                         // Find the closest section to current scroll position
+                         if (distance < closestDistance) {
+                             closestDistance = distance;
                              currentSection = section;
                          }
                      }
