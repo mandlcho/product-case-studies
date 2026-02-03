@@ -558,6 +558,7 @@
                             <a href="#problem" class="hero-nav-link">Problem</a>
                             <a href="#solution" class="hero-nav-link">Solution</a>
                             <a href="#impact" class="hero-nav-link">Impact</a>
+                            <a href="#adoption" class="hero-nav-link">Gap Analysis</a>
                         </div>
                     </div>
                 </div>
@@ -662,6 +663,88 @@
                         <div class="stat-value">$123</div>
                         <div class="stat-label">Value Per Dollar Spent</div>
                         <div class="stat-description">For every $1 invested, creates $123 in savings</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- ADOPTION FUNNEL SECTION -->
+        <section id="adoption" style="background: var(--color-bg-secondary);">
+            <div class="container">
+                <p class="eyebrow">The Opportunity</p>
+                <h2>The Activation Gap</h2>
+                <p>
+                    Pair Chat reaches 78,500 officers, but the real story is the 81,500 who haven't adopted yet. Understanding this gap reveals the next frontier for growth.
+                </p>
+                
+                <!-- Funnel Visualization -->
+                <div style="margin: var(--spacing-xl) 0; display: flex; justify-content: center;">
+                    <svg viewBox="0 0 600 500" style="max-width: 100%; height: auto; max-height: 500px;">
+                        <!-- Background -->
+                        <defs>
+                            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:var(--color-accent-primary);stop-opacity:0.15" />
+                                <stop offset="100%" style="stop-color:var(--color-accent-secondary);stop-opacity:0.15" />
+                            </linearGradient>
+                        </defs>
+                        
+                        <!-- Stage 1: Eligible Officers -->
+                        <g>
+                            <polygon points="100,50 500,50 480,120 120,120" fill="var(--color-accent-primary)" opacity="0.2" stroke="var(--color-accent-primary)" stroke-width="2"/>
+                            <text x="300" y="95" text-anchor="middle" font-size="24" font-weight="bold" fill="var(--color-text-primary)">160,000</text>
+                            <text x="300" y="135" text-anchor="middle" font-size="14" fill="var(--color-text-secondary)">Eligible Officers</text>
+                        </g>
+                        
+                        <!-- Arrow Down -->
+                        <line x1="300" y1="140" x2="300" y2="170" stroke="var(--color-border-default)" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+                                <polygon points="0 0, 10 5, 0 10" fill="var(--color-border-default)" />
+                            </marker>
+                        </defs>
+                        
+                        <!-- Stage 2: Active Users -->
+                        <g>
+                            <polygon points="130,180 470,180 430,280 170,280" fill="var(--color-accent-primary)" opacity="0.4" stroke="var(--color-accent-primary)" stroke-width="2"/>
+                            <text x="300" y="245" text-anchor="middle" font-size="24" font-weight="bold" fill="var(--color-text-primary)">78,500</text>
+                            <text x="300" y="285" text-anchor="middle" font-size="14" fill="var(--color-text-secondary)">Monthly Active Users</text>
+                        </g>
+                        
+                        <!-- Gap Highlight -->
+                        <g>
+                            <rect x="100" y="310" width="400" height="120" fill="var(--color-accent-secondary)" opacity="0.15" rx="8"/>
+                            <text x="300" y="340" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--color-accent-secondary)">THE GAP</text>
+                            <text x="300" y="368" text-anchor="middle" font-size="28" font-weight="bold" fill="var(--color-text-primary)">81,500</text>
+                            <text x="300" y="395" text-anchor="middle" font-size="14" fill="var(--color-text-secondary)">Untapped Officers (51% of eligible)</text>
+                        </g>
+                        
+                        <!-- Bottom annotation -->
+                        <text x="300" y="460" text-anchor="middle" font-size="12" fill="var(--color-text-muted)">Q3 2025 Data | Source: Pair Reports</text>
+                    </svg>
+                </div>
+                
+                <!-- Gap Analysis Cards -->
+                <h3 style="margin-top: var(--spacing-xl);">Why The Gap Exists</h3>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔐</div>
+                        <h4>Trust & Security Skepticism</h4>
+                        <p>Despite secure positioning, officers worry: "Is this really safe?" "What happens to my data?" Perception lags reality.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <h4>Device & Network Constraints</h4>
+                        <p>Only compatible with non-SE GSIBs and GOMAX iPads. Restricted access = restricted adoption. Officers on other devices are blocked.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎓</div>
+                        <h4>Lack of Onboarding & Use Cases</h4>
+                        <p>No clear "here's how this saves YOUR time" messaging. Officers don't know what Pair Chat can do for their specific role.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔌</div>
+                        <h4>Workflow Integration Friction</h4>
+                        <p>Outputs still need rework. Pair Chat feels like "nice-to-have" instead of "must-have" tool in daily workflows.</p>
                     </div>
                 </div>
             </div>
