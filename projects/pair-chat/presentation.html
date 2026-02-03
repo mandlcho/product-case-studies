@@ -3,1368 +3,689 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pair Chat: From Tool to Platform</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
-    <style>
+    <meta name="description" content="Pair Chat Product Teardown - How AI is transforming Singapore Government work">
+    <meta name="theme-color" content="#0f1419">
+    <title>Pair Chat Teardown | How AI Changed Government Work</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style id="inline-styles">
         /* ===========================================
-           PAIR CHAT PRESENTATION
-           Style: Product Focused (Monospace)
-           Animated gradient backgrounds
+           OGP DESIGN TOKENS (Light & Dark Mode)
            =========================================== */
         :root {
-            --bg-primary: #0f172a;
-            --bg-gradient-start: #1e293b;
-            --bg-gradient-end: #0f172a;
-            --text-primary: #f8fafc;
-            --text-secondary: #cbd5e1;
-            --text-muted: #64748b;
-            --accent-green: #10b981;
-            --accent-amber: #f59e0b;
-            --accent-blue: #3b82f6;
-            --accent-red: #ef4444;
+            /* Dark Theme (Default - matches Pair) */
+            --color-bg-primary: #0f1419;
+            --color-bg-secondary: #1a1f28;
+            --color-bg-tertiary: #262d38;
+            --color-bg-interactive: #3a4452;
             
-            --font-display: 'JetBrains Mono', monospace;
-            --font-body: 'IBM Plex Mono', monospace;
+            --color-text-primary: #f5f7fa;
+            --color-text-secondary: #c8d1dc;
+            --color-text-muted: #8b95a5;
             
-            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-            --ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+            --color-border-default: #2f3a48;
+            --color-border-hover: #3a4452;
+            
+            --color-accent-primary: #4a90ff;
+            --color-accent-hover: #357ae8;
+            --color-accent-secondary: #10b981;
+            
+            /* Typography */
+            --font-family-sans: 'Inter', sans-serif;
+            --font-family-mono: 'JetBrains Mono', monospace;
+            
+            --font-size-xs: 1rem;
+            --font-size-sm: 1.125rem;
+            --font-size-base: 1.25rem;
+            --font-size-lg: 1.375rem;
+            --font-size-xl: 2rem;
+            --font-size-2xl: 2.75rem;
+            --font-size-3xl: 3.25rem;
+            --font-size-4xl: 3.75rem;
+            
+            --font-weight-light: 300;
+            --font-weight-regular: 400;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 600;
+            --font-weight-bold: 700;
+            
+            --line-height-tight: 1.2;
+            --line-height-normal: 1.6;
+            --line-height-relaxed: 1.75;
+            
+            /* Spacing */
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+            --spacing-2xl: 4rem;
+            
+            /* Borders */
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.5);
+            
+            /* Transitions */
+            --transition-fast: 150ms cubic-bezier(0.2, 0, 0.38, 0.9);
+            --transition-normal: 300ms cubic-bezier(0.2, 0, 0.38, 0.9);
+            --transition-slow: 500ms cubic-bezier(0.2, 0, 0.38, 0.9);
         }
-
+        
+        /* Light Mode */
+        html[data-theme="light"] {
+            --color-bg-primary: #ffffff;
+            --color-bg-secondary: #f8f9fa;
+            --color-bg-tertiary: #f1f3f5;
+            --color-bg-interactive: #e9ecef;
+            
+            --color-text-primary: #1a1d20;
+            --color-text-secondary: #495057;
+            --color-text-muted: #6c757d;
+            
+            --color-border-default: #dee2e6;
+            --color-border-hover: #adb5bd;
+            
+            --color-accent-primary: #0066ff;
+            --color-accent-hover: #0052cc;
+            --color-accent-secondary: #00b84a;
+            
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.16);
+        }
+        
+        /* ===========================================
+           RESET & BASE STYLES
+           =========================================== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         html {
             scroll-behavior: smooth;
-            scroll-snap-type: y mandatory;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-
+        
         body {
-            font-family: var(--font-body);
-            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
-            color: var(--text-primary);
-            overflow-x: hidden;
-            position: relative;
+            font-family: var(--font-family-sans);
+            background-color: var(--color-bg-primary);
+            color: var(--color-text-primary);
+            line-height: var(--line-height-normal);
         }
-
-        /* ===========================================
-           ANIMATED GRADIENT ORBS
-           Continuously moving background elements
-           =========================================== */
-        body::before,
-        body::after {
-            content: '';
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.2;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        body::before {
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, var(--accent-green) 0%, transparent 70%);
-            top: -150px;
-            right: -150px;
-            animation: float-orb-1 25s ease-in-out infinite;
-        }
-
-        body::after {
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, var(--accent-amber) 0%, transparent 70%);
-            bottom: -100px;
-            left: -100px;
-            animation: float-orb-2 30s ease-in-out infinite;
-        }
-
-        @keyframes float-orb-1 {
-            0%, 100% {
-                transform: translate(0, 0) scale(1);
-            }
-            25% {
-                transform: translate(80px, 120px) scale(1.15);
-            }
-            50% {
-                transform: translate(-50px, 80px) scale(0.9);
-            }
-            75% {
-                transform: translate(40px, -60px) scale(1.05);
-            }
-        }
-
-        @keyframes float-orb-2 {
-            0%, 100% {
-                transform: translate(0, 0) scale(1);
-            }
-            25% {
-                transform: translate(-70px, -100px) scale(1.2);
-            }
-            50% {
-                transform: translate(60px, -50px) scale(0.95);
-            }
-            75% {
-                transform: translate(-40px, 70px) scale(1.1);
-            }
-        }
-
-        /* ===========================================
-           PROGRESS BAR
-           =========================================== */
-        .progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 3px;
-            background: var(--accent-green);
-            width: 0%;
-            z-index: 1000;
-            transition: width 0.3s ease;
-        }
-
-        /* ===========================================
-           NAVIGATION DOTS
-           =========================================== */
-        .nav-dots {
-            position: fixed;
-            right: 2rem;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .nav-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--text-muted);
-            cursor: pointer;
-            transition: all 0.3s var(--ease-out-expo);
-            border: 2px solid transparent;
-            opacity: 0.5;
-        }
-
-        .nav-dot:hover {
-            background: var(--text-secondary);
-            transform: scale(1.3);
-            opacity: 0.7;
-        }
-
-        .nav-dot.active {
-            background: var(--accent-green);
-            transform: scale(1.5);
-            box-shadow: 0 0 12px var(--accent-green);
-            opacity: 1;
-        }
-
-        /* ===========================================
-           SLIDE CONTAINER
-           =========================================== */
-        .slide {
-            min-height: 100vh;
-            padding: clamp(2rem, 5vw, 4rem);
-            scroll-snap-align: start;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
-            z-index: 1;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
+        
         /* ===========================================
            TYPOGRAPHY
            =========================================== */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: var(--font-weight-bold);
+            line-height: var(--line-height-tight);
+            margin-bottom: var(--spacing-md);
+        }
+        
         h1 {
-            font-family: var(--font-display);
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
-            color: var(--text-primary);
+            font-size: clamp(2.5rem, 5vw, var(--font-size-4xl));
             letter-spacing: -0.02em;
         }
-
-        h1::before {
-            content: '> ';
-            color: var(--accent-green);
-            opacity: 0.8;
-        }
-
+        
         h2 {
-            font-family: var(--font-display);
-            font-size: clamp(1.5rem, 3.5vw, 2.5rem);
-            font-weight: 600;
-            line-height: 1.3;
-            margin-bottom: 2rem;
-            color: var(--text-primary);
+            font-size: var(--font-size-3xl);
+            letter-spacing: -0.01em;
         }
-
-        h2::before {
-            content: '// ';
-            color: var(--accent-blue);
-            opacity: 0.6;
-            font-size: 0.8em;
-        }
-
+        
         h3 {
-            font-family: var(--font-display);
-            font-size: clamp(1.1rem, 2vw, 1.5rem);
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--accent-amber);
+            font-size: var(--font-size-2xl);
         }
-
+        
+        h4 {
+            font-size: var(--font-size-lg);
+        }
+        
         p {
-            font-size: clamp(0.95rem, 1.5vw, 1.1rem);
-            line-height: 1.7;
-            margin-bottom: 1rem;
-            color: var(--text-secondary);
+            margin-bottom: var(--spacing-md);
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-sm);
         }
-
-        strong {
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-
-        /* ===========================================
-           TITLE SLIDE
-           =========================================== */
-        .title-slide {
-            text-align: left;
-        }
-
-        .title-slide h1 {
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            margin-bottom: 1rem;
-        }
-
-        .subtitle {
-            font-size: clamp(1rem, 2.5vw, 1.5rem);
-            color: var(--text-secondary);
-            margin-bottom: 3rem;
-            padding-left: 2rem;
-            border-left: 3px solid var(--accent-blue);
-            line-height: 1.6;
-        }
-
-        .meta {
-            font-size: 1rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            color: var(--accent-amber);
-        }
-
-        .meta::before {
-            content: '●';
-            color: var(--accent-green);
-            animation: pulse-dot 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        /* ===========================================
-           METRICS GRID
-           =========================================== */
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .metric {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .metric-value {
-            font-family: var(--font-display);
-            font-size: clamp(1.5rem, 3vw, 2.5rem);
-            font-weight: 700;
-            color: var(--accent-green);
-        }
-
-        .metric-label {
-            font-size: 0.85rem;
-            color: var(--text-muted);
+        
+        p.eyebrow {
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.1em;
+            color: var(--color-accent-primary);
+            margin-bottom: var(--spacing-sm);
         }
-
+        
+        a {
+            color: var(--color-accent-primary);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+        
+        a:hover {
+            color: var(--color-accent-hover);
+        }
+        
         /* ===========================================
-           LISTS
+           LAYOUT
            =========================================== */
-        ul, ol {
-            margin: 1.5rem 0;
-            padding-left: 0;
-            list-style: none;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-lg);
         }
-
-        li {
-            margin-bottom: 1.5rem;
-            padding-left: 2rem;
+        
+        section {
+            padding: var(--spacing-2xl) 0;
+        }
+        
+        /* ===========================================
+           HEADER & NAVIGATION
+           =========================================== */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--color-bg-primary);
+            border-bottom: 1px solid var(--color-border-default);
+            backdrop-filter: blur(10px);
+            background-color: rgba(15, 20, 25, 0.8);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md) 0;
+        }
+        
+        .logo {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-text-primary);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: var(--spacing-lg);
+            align-items: center;
+        }
+        
+        .nav-links a {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            transition: color var(--transition-fast);
+        }
+        
+        .nav-links a:hover {
+            color: var(--color-text-primary);
+        }
+        
+        .theme-toggle {
+            background: var(--color-bg-tertiary);
+            border: 1px solid var(--color-border-default);
+            color: var(--color-text-primary);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            font-size: var(--font-size-base);
+        }
+        
+        .theme-toggle:hover {
+            background: var(--color-bg-interactive);
+            border-color: var(--color-border-hover);
+        }
+        
+        /* ===========================================
+           HERO SECTION
+           =========================================== */
+        .hero {
+            padding: var(--spacing-2xl) 0 var(--spacing-xl);
+            background: linear-gradient(135deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 100%);
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
             position: relative;
-            line-height: 1.6;
+            overflow: hidden;
         }
-
-        ul li::before {
-            content: '▸';
+        
+        .hero::before {
+            content: '';
             position: absolute;
-            left: 0;
-            color: var(--accent-green);
-            font-weight: bold;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(74, 144, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
         }
-
-        ol {
-            counter-reset: item;
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
         }
-
-        ol li::before {
-            content: counter(item) '.';
-            counter-increment: item;
+        
+        .hero h1 {
+            margin-bottom: var(--spacing-md);
+            background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-subtitle {
+            font-size: var(--font-size-xl);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-lg);
+            line-height: var(--line-height-relaxed);
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: var(--spacing-md) var(--spacing-lg);
+            background: var(--color-accent-primary);
+            color: white;
+            border-radius: var(--radius-md);
+            font-weight: var(--font-weight-semibold);
+            transition: all var(--transition-fast);
+            border: 2px solid var(--color-accent-primary);
+            cursor: pointer;
+            font-size: var(--font-size-sm);
+        }
+        
+        .cta-button:hover {
+            background: var(--color-accent-hover);
+            border-color: var(--color-accent-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .cta-button.secondary {
+            background: transparent;
+            color: var(--color-accent-primary);
+            border: 2px solid var(--color-accent-primary);
+        }
+        
+        .cta-button.secondary:hover {
+            background: var(--color-bg-interactive);
+        }
+        
+        /* ===========================================
+           STAT CARDS
+           =========================================== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+        
+        .stat-card {
+            background: var(--color-bg-secondary);
+            border: 1px solid var(--color-border-default);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            transition: all var(--transition-normal);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card:hover {
+            border-color: var(--color-accent-primary);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-4px);
+        }
+        
+        .stat-card::before {
+            content: '';
             position: absolute;
+            top: 0;
             left: 0;
-            color: var(--accent-amber);
-            font-weight: 600;
-            font-family: var(--font-display);
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--color-accent-primary), var(--color-accent-secondary));
         }
-
+        
+        .stat-value {
+            font-size: clamp(2.5rem, 4vw, 3.75rem);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-accent-primary);
+            line-height: 1;
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .stat-label {
+            font-size: var(--font-size-sm);
+            color: var(--color-text-secondary);
+            font-weight: var(--font-weight-medium);
+        }
+        
+        .stat-description {
+            font-size: var(--font-size-xs);
+            color: var(--color-text-muted);
+            margin-top: var(--spacing-sm);
+        }
+        
         /* ===========================================
-           CALLOUT BOXES
+           FEATURE CARDS
            =========================================== */
-        .callout {
-            background: rgba(16, 185, 129, 0.1);
-            border-left: 4px solid var(--accent-green);
-            padding: 1.5rem;
-            margin: 2rem 0;
-            border-radius: 4px;
-        }
-
-        .callout.warning {
-            background: rgba(245, 158, 11, 0.1);
-            border-left-color: var(--accent-amber);
-        }
-
-        .callout.info {
-            background: rgba(59, 130, 246, 0.1);
-            border-left-color: var(--accent-blue);
-        }
-
-        /* ===========================================
-           TABLES
-           =========================================== */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 2rem 0;
-            font-size: 0.9rem;
-        }
-
-        th, td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        th {
-            font-weight: 600;
-            color: var(--accent-amber);
-            background: rgba(255, 255, 255, 0.03);
-        }
-
-        td {
-            color: var(--text-secondary);
-        }
-
-        tr:hover {
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        /* ===========================================
-           SIGNAL CARDS
-           =========================================== */
-        .signal-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 2rem;
-            margin: 1.5rem 0;
-        }
-
-        .signal-card h3 {
-            margin-bottom: 1rem;
-        }
-
-        /* ===========================================
-           OPTIONS GRID
-           =========================================== */
-        .options-grid {
+        .feature-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
+            gap: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
         }
-
-        .option-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 1.5rem;
+        
+        .feature-card {
+            background: var(--color-bg-secondary);
+            border: 1px solid var(--color-border-default);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            transition: all var(--transition-normal);
         }
-
-        .option-card.recommended {
-            border-color: var(--accent-green);
-            background: rgba(16, 185, 129, 0.05);
+        
+        .feature-card:hover {
+            border-color: var(--color-accent-primary);
+            box-shadow: var(--shadow-md);
         }
-
-        .option-card h3 {
-            margin-bottom: 1rem;
-        }
-
-        /* ===========================================
-           TIMELINE
-           =========================================== */
-        .timeline {
-            margin: 2rem 0;
-        }
-
-        .timeline-item {
-            margin-bottom: 3rem;
-            padding-left: 3rem;
-            position: relative;
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0.5rem;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--accent-green);
-            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
-        }
-
-        .timeline-item::after {
-            content: '';
-            position: absolute;
-            left: 5px;
-            top: 1.5rem;
-            width: 2px;
-            height: calc(100% + 1rem);
-            background: rgba(16, 185, 129, 0.2);
-        }
-
-        .timeline-item:last-child::after {
-            display: none;
-        }
-
-        /* ===========================================
-           ANIMATIONS
-           =========================================== */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.7s var(--ease-out-expo),
-                        transform 0.7s var(--ease-out-expo);
-        }
-
-        .slide.visible .reveal {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .reveal:nth-child(1) { transition-delay: 0.1s; }
-        .reveal:nth-child(2) { transition-delay: 0.2s; }
-        .reveal:nth-child(3) { transition-delay: 0.3s; }
-        .reveal:nth-child(4) { transition-delay: 0.4s; }
-        .reveal:nth-child(5) { transition-delay: 0.5s; }
-        .reveal:nth-child(6) { transition-delay: 0.6s; }
-
-        /* ===========================================
-           KEYBOARD HINT
-           =========================================== */
-        .keyboard-hint {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            z-index: 100;
+        
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--color-bg-tertiary);
+            border-radius: var(--radius-md);
             display: flex;
-            gap: 1rem;
             align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin-bottom: var(--spacing-md);
         }
-
-        .key {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-family: var(--font-display);
-            font-size: 0.75rem;
+        
+        .feature-card h3 {
+            margin-bottom: var(--spacing-sm);
         }
-
+        
         /* ===========================================
            RESPONSIVE
            =========================================== */
         @media (max-width: 768px) {
-            .nav-dots,
-            .keyboard-hint {
-                display: none;
+            .nav-links {
+                gap: var(--spacing-md);
             }
-
-            h1 {
-                font-size: 2rem;
+            
+            section {
+                padding: var(--spacing-xl) 0;
             }
-
-            h2 {
-                font-size: 1.5rem;
+            
+            .hero {
+                min-height: 50vh;
+                padding: var(--spacing-xl) 0 var(--spacing-lg);
             }
-
-            .metrics-grid {
+            
+            .hero::before {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .stats-grid {
                 grid-template-columns: 1fr;
             }
-
-            .options-grid {
+            
+            .feature-grid {
                 grid-template-columns: 1fr;
-            }
-
-            body::before,
-            body::after {
-                opacity: 0.1;
             }
         }
-
+        
         /* ===========================================
-           REDUCED MOTION
+           ANIMATIONS
            =========================================== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes countUp {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        .hero-content {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        /* Reduce motion support */
         @media (prefers-reduced-motion: reduce) {
-            html {
-                scroll-behavior: auto;
-            }
-
-            .reveal {
-                transition: opacity 0.3s ease;
-                transform: none;
-            }
-
-            body::before,
-            body::after {
-                animation: none;
-            }
-
-            .meta::before {
-                animation: none;
+            * {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Progress bar -->
-    <div class="progress-bar"></div>
-
-    <!-- Navigation dots -->
-    <nav class="nav-dots" aria-label="Slide navigation">
-        <!-- Generated by JS -->
-    </nav>
-
-    <!-- Keyboard hint -->
-    <div class="keyboard-hint">
-        <span>Navigate: <span class="key">←</span> <span class="key">→</span> or <span class="key">Space</span></span>
-    </div>
-
-    <!-- SLIDE 1: TITLE -->
-    <section class="slide title-slide">
-        <h1 class="reveal">Pair Chat: From Tool to Platform</h1>
-        <p class="reveal subtitle">Product Strategy Analysis</p>
-        <p class="reveal meta">Mandl Cho • January 2026</p>
-    </section>
-
-    <!-- SLIDE 2: THE HOOK -->
-    <section class="slide">
-        <h2 class="reveal">The Hook</h2>
-        <div class="callout reveal">
-            <p style="font-size: 1.3rem; font-weight: 600; color: var(--text-primary);">
-                "20,000 custom AIBots created by users in 18 months."
-            </p>
-        </div>
-        <p class="reveal">That's not a feature adoption metric—that's a <strong>platform signal</strong>. Pair Chat has crossed the threshold from <strong>tool</strong> to <strong>platform</strong>. Users aren't just consuming AI assistance; they're creating institutional knowledge at scale.</p>
-        <p class="reveal">But here's the tension: <strong>Only 70% of public officers are using it.</strong> The remaining 30%—roughly 45,000 officers—represent untapped potential worth an estimated <strong style="color: var(--accent-green);">$8.7M in monthly productivity gains</strong>.</p>
-        <div class="callout warning reveal">
-            <p style="font-weight: 600;">The question isn't "Does Pair Chat work?" It's <strong>"How do we capture the value we're leaving on the table?"</strong></p>
-        </div>
-    </section>
-
-    <!-- SLIDE 3: THE CORE PROBLEM -->
-    <section class="slide">
-        <h2 class="reveal">The Core Problem: 47% Activation Gap</h2>
-        <div class="callout info reveal" style="background: rgba(239, 68, 68, 0.1); border-left-color: var(--accent-red);">
-            <p style="font-size: 1.4rem; font-weight: 600;"><strong>149,000 registered users. Only 78,517 active.</strong></p>
-            <p style="font-size: 1.2rem;">That's a <strong style="color: var(--accent-red);">47% activation gap</strong>—70,000 officers signed up but never activated.</p>
-            <p style="margin-top: 1rem;">They're not churned users who tried and left. They're people who registered and never started.</p>
-        </div>
-        <div class="callout reveal" style="margin-top: 2rem;">
-            <p style="font-size: 1.2rem; font-weight: 600;">This represents <strong style="color: var(--accent-green);">$8.7M in untapped monthly productivity value.</strong></p>
-        </div>
-        <p class="reveal" style="margin-top: 2rem; font-size: 1.1rem;">The question isn't "Does Pair Chat work?" (It does—832,280 hours saved monthly, 4.2/5 satisfaction, 20,000 user-created AIBots.)</p>
-        <p class="reveal" style="font-size: 1.2rem; font-weight: 600; color: var(--accent-amber);">The question is: <strong>Why did 70,000 people sign up but never activate?</strong></p>
-    </section>
-
-    <!-- SLIDE 4: CONTEXT - WHAT IS PAIR CHAT -->
-    <section class="slide">
-        <h2 class="reveal">Understanding Pair Chat</h2>
-        <p class="reveal">Pair Chat is Singapore's government-specific AI assistant—think ChatGPT, but <strong>cleared for RESTRICTED/SENSITIVE NORMAL data</strong> and <strong>zero-cost</strong> to all 150,000 public officers.</p>
-        <h3 class="reveal">What it does:</h3>
-        <ul class="reveal">
-            <li>Secure chat interface (gov-cleared for RESTRICTED/SENSITIVE NORMAL)</li>
-            <li>Custom Assistants (20,000+ created by users)</li>
-            <li>Specialized tools: Pair Search, Pair Noms, Batch Jobs</li>
-        </ul>
-        <div class="metrics-grid reveal" style="margin-top: 2rem;">
-            <div class="metric">
-                <span class="metric-value">78,517</span>
-                <span class="metric-label">Monthly Active Users</span>
-            </div>
-            <div class="metric">
-                <span class="metric-value">832,280</span>
-                <span class="metric-label">Hours Saved/Month</span>
-            </div>
-            <div class="metric">
-                <span class="metric-value">$28.9M</span>
-                <span class="metric-label">Monthly Savings</span>
-            </div>
-            <div class="metric">
-                <span class="metric-value">4.2/5</span>
-                <span class="metric-label">User Satisfaction</span>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Pair Chat</div>
+                <nav class="nav-links">
+                    <a href="#problem">Problem</a>
+                    <a href="#solution">Solution</a>
+                    <a href="#impact">Impact</a>
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
+                </nav>
             </div>
         </div>
-        <p class="reveal" style="margin-top: 2rem; font-weight: 600; color: var(--accent-green);">The product works. The challenge is adoption.</p>
-    </section>
-
-    <!-- SLIDE 5: ROOT CAUSE - THE RESEARCH -->
-    <section class="slide">
-        <h2 class="reveal">Root Cause: How I Discovered This</h2>
-        <p class="reveal" style="font-size: 1.8rem; font-weight: 600; color: var(--accent-green); margin-top: 3rem;">I spent 2 weeks interviewing inactive users to understand the 47% activation gap.</p>
-    </section>
-
-    <!-- SLIDE 6: USER VOICE - TRUST BARRIER -->
-    <section class="slide">
-        <h3 class="reveal" style="font-size: 1.2rem; margin-bottom: 2rem;">From a policy officer at MOH:</h3>
-        <div class="callout reveal" style="background: rgba(239, 68, 68, 0.1); border-left-color: var(--accent-red);">
-            <p style="font-style: italic; font-size: 1.4rem; line-height: 1.6;">"I signed up because my boss told me to. But I've never logged in because I don't know what to ask it. And honestly, I'm terrified of accidentally sharing classified data."</p>
-        </div>
-        <p class="reveal" style="margin-top: 3rem; font-size: 1.3rem; font-weight: 600; color: var(--accent-amber);">Pattern: Security anxiety prevents first use.</p>
-    </section>
-
-    <!-- SLIDE 7: USER VOICE - UNCLEAR VALUE -->
-    <section class="slide">
-        <h3 class="reveal" style="font-size: 1.2rem; margin-bottom: 2rem;">From an ops manager at MOM:</h3>
-        <div class="callout reveal" style="background: rgba(245, 158, 11, 0.1); border-left-color: var(--accent-amber);">
-            <p style="font-style: italic; font-size: 1.4rem; line-height: 1.6;">"I tried it once. Asked it to draft a memo. The output was... fine? But I spent 30 minutes editing it anyway. Easier to just write it myself."</p>
-        </div>
-        <p class="reveal" style="margin-top: 3rem; font-size: 1.3rem; font-weight: 600; color: var(--accent-amber);">Pattern: Unclear ROI leads to abandonment.</p>
-    </section>
-
-    <!-- SLIDE 8: USER VOICE - DISCOVERABILITY GAP -->
-    <section class="slide">
-        <h3 class="reveal" style="font-size: 1.2rem; margin-bottom: 2rem;">From an analytics lead at MTI:</h3>
-        <div class="callout reveal" style="background: rgba(59, 130, 246, 0.1); border-left-color: var(--accent-blue);">
-            <p style="font-style: italic; font-size: 1.4rem; line-height: 1.6;">"I know AIBots exist. My colleague raves about one for procurement. But I have no idea how to find it or if it's any good."</p>
-        </div>
-        <p class="reveal" style="margin-top: 3rem; font-size: 1.3rem; font-weight: 600; color: var(--accent-amber);">Pattern: Can't discover what's already been built.</p>
-    </section>
-
-    <!-- SLIDE 9: THE DIAGNOSIS -->
-    <section class="slide">
-        <h2 class="reveal">The Diagnosis</h2>
-        <p class="reveal" style="font-size: 1.5rem; margin-top: 2rem;">The pattern across all three:</p>
-        <div class="callout reveal" style="margin-top: 2rem;">
-            <p style="font-size: 1.3rem; line-height: 1.6;">It's not that Pair Chat doesn't work. It's that officers don't know <strong style="color: var(--accent-green);">what it's for</strong>, don't trust <strong style="color: var(--accent-red);">where their data goes</strong>, and can't discover <strong style="color: var(--accent-blue);">what's already been built</strong>.</p>
-        </div>
-        <p class="reveal" style="margin-top: 3rem; font-size: 1.5rem; font-weight: 600; color: var(--accent-amber);">This isn't a feature gap—it's a trust and discoverability problem.</p>
-    </section>
-
-    <!-- SLIDE 10: EVIDENCE - THE THREE SIGNALS -->
-    <section class="slide">
-        <h2 class="reveal">Evidence: The Three Signals</h2>
-        <p class="reveal">Most product teams would look at 70% adoption and celebrate. I see <strong>three interconnected signals</strong> that reveal why closing the activation gap is critical:</p>
-        <div class="signal-card reveal">
-            <h3>Signal 1: The 20,000 AIBot Explosion</h3>
-            <ul>
-                <li>Users aren't just using Pair Chat—they're <strong>building on it</strong></li>
-                <li>Examples: SGH's "Proph Abby", BCA's compliance reviewers, PA's Charity Act interpreter</li>
-                <li>This is <strong>bottom-up innovation</strong> at scale</li>
-            </ul>
-        </div>
-    </section>
-
-    <!-- SLIDE 11: SIGNALS 2 & 3 -->
-    <section class="slide">
-        <div class="signal-card reveal">
-            <h3>Signal 2: The Activation Gap</h3>
-            <ul>
-                <li>149K registered, 78.5K active = <strong>47% aren't converting</strong></li>
-                <li>These aren't people who tried and left—they signed up but never started</li>
-                <li>Classic <strong>trust + discoverability problem</strong>, not a capability problem</li>
-            </ul>
-        </div>
-        <div class="signal-card reveal">
-            <h3>Signal 3: The Case Study Pattern</h3>
-            <ul>
-                <li>SGH: 95% compliance (up from 80%), 90% time savings</li>
-                <li>BCA: "Hours to minutes" for report reviews</li>
-                <li>PA: Self-service enabled for complex legislation</li>
-            </ul>
-        </div>
-    </section>
-
-    <!-- SLIDE 12: WHAT THESE SIGNALS MEAN -->
-    <section class="slide">
-        <h2 class="reveal">What These Signals Mean Together</h2>
-        <div class="callout reveal" style="margin-top: 3rem;">
-            <p style="font-size: 1.4rem; font-weight: 600; line-height: 1.6;">When users <strong style="color: var(--accent-green);">trust</strong> Pair Chat enough to use it, they don't just use it—they <strong style="color: var(--accent-amber);">build institutional knowledge</strong> with it.</p>
-        </div>
-        <p class="reveal" style="font-size: 1.3rem; margin-top: 3rem;">The 20,000 AIBots aren't just productivity hacks; they're <strong>codified expertise</strong> that compounds over time.</p>
-    </section>
-
-    <!-- SLIDE 12A: HOW I ARRIVED AT THIS INSIGHT - THE PATTERN -->
-    <section class="slide">
-        <h2 class="reveal">How I Arrived at This Insight</h2>
-        <p class="reveal" style="font-size: 1.2rem; margin-top: 2rem;">I was reviewing the case studies when something clicked. Look at the pattern:</p>
-        <ul class="reveal" style="font-size: 1.1rem; margin-top: 2rem; line-height: 1.8;">
-            <li><strong>SGH:</strong> They didn't just use Pair Chat—they created "Proph Abby" and <strong style="color: var(--accent-green);">shared it with 200+ doctors across departments</strong></li>
-            <li><strong>BCA:</strong> They built compliance reviewers and <strong style="color: var(--accent-green);">made them available agency-wide</strong></li>
-            <li><strong>PA:</strong> They created a Charity Act interpreter and <strong style="color: var(--accent-green);">enabled self-service for operational staff</strong></li>
-        </ul>
-    </section>
-
-    <!-- SLIDE 12B: THE COMMON THREAD -->
-    <section class="slide">
-        <h2 class="reveal">The Common Thread</h2>
-        <p class="reveal" style="font-size: 1.4rem; margin-top: 3rem; font-weight: 600; color: var(--accent-green);">Champions who evangelized internally.</p>
-        <p class="reveal" style="font-size: 1.2rem; margin-top: 2rem;">They didn't just solve their own problem—they codified their expertise and spread it.</p>
-        <div class="callout reveal" style="margin-top: 3rem; background: rgba(239, 68, 68, 0.1); border-left-color: var(--accent-red);">
-            <p style="font-size: 1.2rem;">Now look at the 30% non-users. What do they have in common?</p>
-            <p style="font-size: 1.3rem; font-weight: 600; margin-top: 1rem;">No champions. No shared AIBots. No internal evangelism.</p>
-        </div>
-    </section>
-
-    <!-- SLIDE 12C: THE AHA MOMENT -->
-    <section class="slide">
-        <h2 class="reveal">The Aha Moment</h2>
-        <div class="callout info reveal" style="margin-top: 4rem;">
-            <p style="font-size: 1.5rem; font-weight: 600; line-height: 1.6;">Pair Chat's true competition isn't ChatGPT—it's <strong style="color: var(--accent-red);">inertia</strong>.</p>
-            <p style="font-size: 1.3rem; margin-top: 2rem;">And the unlock isn't better features—it's <strong style="color: var(--accent-green);">making trust visible and discovery effortless</strong>.</p>
-        </div>
-    </section>
-
-    <!-- SLIDE 13: THE DIAGNOSIS - THREE BARRIERS -->
-    <section class="slide">
-        <h2 class="reveal">The Diagnosis: Three Barriers</h2>
-        <ol class="reveal">
-            <li><strong>Trust barrier:</strong> 30% of officers don't trust it enough to start (security concerns, hallucination fears, unclear safe-use boundaries)</li>
-            <li><strong>Discoverability gap:</strong> Officers who would benefit don't know which use cases fit their work</li>
-            <li><strong>Quality variance:</strong> 20,000 user-created AIBots with no governance = inconsistent quality and potential risk</li>
-        </ol>
-        <div class="callout warning reveal">
-            <p style="font-weight: 600;">This isn't a feature gap—it's a <strong>platform maturity problem</strong>.</p>
-        </div>
-    </section>
-
-    <!-- SLIDE 14: STRATEGIC OPTIONS -->
-    <section class="slide">
-        <h2 class="reveal">The Strategic Choice</h2>
-        <p class="reveal">If Pair Chat is becoming a platform, we face a classic platform dilemma:</p>
-        <div class="options-grid reveal">
-            <div class="option-card">
-                <h3>Option A: Expand User Base</h3>
-                <p><strong>Focus:</strong> The 30% non-users</p>
-                <p><strong>Pros:</strong> Unlock $8.7M/month, broader impact</p>
-                <p><strong>Cons:</strong> Requires trust-building at scale</p>
+    </header>
+    
+    <main>
+        <!-- HERO SECTION -->
+        <section class="hero" id="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <p class="eyebrow">Product Teardown</p>
+                    <h1>How AI Changed Government Work</h1>
+                    <p class="hero-subtitle">
+                        Meet Pair Chat: A secure AI assistant that helped Singapore's government work smarter, not harder. Here's how 78,500+ public officers are saving 59 minutes per task.
+                    </p>
+                    <button class="cta-button" onclick="document.getElementById('problem').scrollIntoView({behavior: 'smooth'})">
+                        Explore the Story
+                    </button>
+                </div>
             </div>
-            <div class="option-card">
-                <h3>Option B: Deepen Engagement</h3>
-                <p><strong>Focus:</strong> The 70% active users</p>
-                <p><strong>Pros:</strong> Network effects, institutional knowledge</p>
-                <p><strong>Cons:</strong> Leaves 45K officers on table</p>
-            </div>
-            <div class="option-card">
-                <h3>Option C: Platform Governance</h3>
-                <p><strong>Focus:</strong> The 20,000 AIBots</p>
-                <p><strong>Pros:</strong> Quality control, risk mitigation</p>
-                <p><strong>Cons:</strong> Could slow innovation</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- SLIDE 15: MY RECOMMENDATION -->
-    <section class="slide">
-        <h2 class="reveal">My Recommendation</h2>
-        <div class="callout reveal" style="margin-top: 3rem;">
-            <p style="font-size: 1.6rem; font-weight: 600; color: var(--accent-green);">Option A + C in Sequence</p>
-        </div>
-        <div class="reveal" style="margin-top: 3rem;">
-            <h3>Why:</h3>
-            <ol style="font-size: 1.2rem; line-height: 1.8;">
-                <li>The 47% activation gap is <strong>low-hanging fruit</strong>—these people already signed up</li>
-                <li>Platform governance (Option C) is <strong>table stakes</strong> as AIBots proliferate</li>
-                <li>Deepening engagement (Option B) happens naturally once trust + governance are solved</li>
-            </ol>
-        </div>
-    </section>
-
-    <!-- SLIDE 15A: DECISION CRITERIA - TIME TO IMPACT -->
-    <section class="slide">
-        <h2 class="reveal">How I Decided: Time to Impact</h2>
-        <div class="reveal" style="margin-top: 3rem;">
-            <ul style="font-size: 1.2rem; line-height: 2;">
-                <li><strong>Option A:</strong> 30-60 days to see activation movement</li>
-                <li><strong>Option B:</strong> 60-90 days to see AIBot quality improve</li>
-                <li><strong>Option C:</strong> 45-60 days to launch marketplace MVP</li>
-            </ul>
-        </div>
-        <p class="reveal" style="margin-top: 3rem; font-size: 1.3rem; font-weight: 600; color: var(--accent-green);">Winner: Option A (fastest path to impact)</p>
-    </section>
-
-    <!-- SLIDE 15B: DECISION CRITERIA - RISK & COMPOUNDING -->
-    <section class="slide">
-        <h2 class="reveal">Risk & Compounding Effects</h2>
-        <div class="reveal" style="margin-top: 2rem;">
-            <h3>Risk Assessment:</h3>
-            <ul style="font-size: 1.1rem;">
-                <li><strong>Option A:</strong> Medium risk (trust messaging could backfire)</li>
-                <li><strong>Option B:</strong> Low risk (but leaves 45K officers on table)</li>
-                <li><strong>Option C:</strong> High risk (curation bottleneck)</li>
-            </ul>
-        </div>
-        <div class="reveal" style="margin-top: 2rem;">
-            <h3>Compounding Effects:</h3>
-            <ul style="font-size: 1.1rem;">
-                <li><strong>Option A:</strong> Unlocks network effects (more users → more AIBots)</li>
-                <li><strong>Option B:</strong> Deepens moat (better AIBots → higher retention)</li>
-                <li><strong>Option C:</strong> Enables discovery (marketplace → more usage)</li>
-            </ul>
-        </div>
-    </section>
-
-    <!-- SLIDE 15C: VALIDATION & DECISION CRITERIA -->
-    <section class="slide">
-        <h2 class="reveal">Validation</h2>
-        <div class="callout info reveal" style="margin-top: 3rem;">
-            <p style="font-size: 1.3rem;"><strong>I talked to 5 agency heads.</strong></p>
-            <p style="font-size: 1.2rem; margin-top: 1rem;">4 said trust is the #1 barrier. 1 said discoverability.</p>
-            <p style="font-size: 1.3rem; margin-top: 2rem; font-weight: 600;">That validated my hypothesis: <strong style="color: var(--accent-green);">A + C in sequence</strong> addresses both.</p>
-        </div>
-        <div class="callout reveal" style="margin-top: 3rem; background: rgba(245, 158, 11, 0.1); border-left-color: var(--accent-amber);">
-            <p style="font-size: 1.2rem;"><strong>Decision criteria:</strong> If activation rate doesn't move 5% by Day 30, I'll pivot to Option B instead.</p>
-        </div>
-    </section>
-
-    <!-- SLIDE 15D: THE TRADE-OFF -->
-    <section class="slide">
-        <h2 class="reveal">The Trade-Off</h2>
-        <div class="reveal" style="margin-top: 3rem;">
-            <p style="font-size: 1.4rem; font-weight: 600; color: var(--accent-red);">Deprioritizing:</p>
-            <ul style="font-size: 1.2rem; margin-top: 1rem;">
-                <li>New features (e.g., Pair Scribe, new integrations)</li>
-                <li>Model upgrades (Claude Sonnet 4 is already strong)</li>
-                <li>Expanding to new use cases</li>
-            </ul>
-        </div>
-        <div class="reveal" style="margin-top: 3rem;">
-            <p style="font-size: 1.4rem; font-weight: 600; color: var(--accent-green);">Prioritizing:</p>
-            <ul style="font-size: 1.2rem; margin-top: 1rem;">
-                <li>Trust-building UX</li>
-                <li>Onboarding experience</li>
-                <li>AIBot quality/discovery</li>
-            </ul>
-        </div>
-    </section>
-
-    <!-- SLIDE 20: 30/60/90 OVERVIEW -->
-    <section class="slide">
-        <h2 class="reveal">Path Forward: 30/60/90 Day Plan</h2>
-        <div class="callout info reveal">
-            <p><strong>Focus Area:</strong> Closing the Activation Gap</p>
-            <p><strong>Goal:</strong> Convert 20% of inactive registered users (14,000 officers) to monthly actives within 90 days</p>
-        </div>
-        <div class="metrics-grid reveal">
-            <div class="metric">
-                <span class="metric-value">78.5K → 92.5K</span>
-                <span class="metric-label">MAU Increase</span>
-            </div>
-            <div class="metric">
-                <span class="metric-value">53% → 62%</span>
-                <span class="metric-label">Activation Rate</span>
-            </div>
-            <div class="metric">
-                <span class="metric-value">7 Days</span>
-                <span class="metric-label">First Task Completion</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- SLIDE 21: FIRST 30 DAYS WEEK-BY-WEEK -->
-    <section class="slide">
-        <h2 class="reveal">First 30 Days: Week-by-Week Execution</h2>
-        <div class="timeline reveal">
-            <div class="timeline-item">
-                <h3>Week 1: Listen & Learn</h3>
-                <ul>
-                    <li>Shadow 5 officers (3 active users, 2 inactive)</li>
-                    <li>Interview Pair team + 2 agency IT leads + 1 security officer</li>
-                    <li>Map current metrics dashboard, identify data gaps</li>
-                    <li><strong>Hypothesis:</strong> "Officers don't activate because they don't understand the safety model"</li>
-                </ul>
-            </div>
-            <div class="timeline-item">
-                <h3>Week 2-3: Design & Build</h3>
-                <ul>
-                    <li>Design trust banner (Owner: Product Designer)</li>
-                    <li>Build trust banner (Owner: Eng Lead) — 3 days</li>
-                    <li>Draft 5 persona-based onboarding templates (Owner: Content Designer)</li>
-                    <li>Create survey: "What's stopping you?" (Owner: Data Analyst)</li>
-                    <li><strong>Prototype test:</strong> Show banner to 10 inactive users</li>
-                </ul>
-            </div>
-            <div class="timeline-item">
-                <h3>Week 3: Ship & Measure</h3>
-                <ul>
-                    <li>Ship trust banner to 10% of inactive users</li>
-                    <li>Launch survey to remaining 90%</li>
-                    <li>Track: % who see banner → % who complete first task within 7 days</li>
-                    <li><strong>Target:</strong> 10% activation rate (baseline: 0%)</li>
-                </ul>
-            </div>
-            <div class="timeline-item">
-                <h3>Week 4: Analyze & Decide</h3>
-                <ul>
-                    <li>Review A/B test results with data team</li>
-                    <li><strong>Decision point:</strong> If <5%: kill banner, pivot to templates</li>
-                    <li>If 5-10%: iterate messaging, test with 25% of users</li>
-                    <li>If >10%: expand to 50%, declare quick win</li>
-                    <li>Present findings + secure resources for 60-day plan</li>
-                </ul>
-            </div>
-        </div>
-        <div class="callout warning reveal" style="margin-top: 2rem;">
-            <p><strong>What could go wrong:</strong> Trust messaging makes users MORE anxious (saw this in prototype with 3/10 users). <strong>Mitigation:</strong> A/B test 3 variations, pick the one that reduces anxiety.</p>
-        </div>
-    </section>
-
-    <!-- SLIDE 22: 30 DAYS -->
-    <section class="slide">
-        <h2 class="reveal">30 Days: Make Trust Visible</h2>
-        <p class="reveal"><strong>Problem:</strong> Officers don't trust Pair Chat because they don't understand the safety model</p>
-        <div class="timeline reveal">
-            <div class="timeline-item">
-                <h3>In-product trust signals</h3>
-                <ul>
-                    <li>"What's safe to share" banner on first 3 sessions</li>
-                    <li>"Your data is not logged" on every chat start</li>
-                    <li>"Safe Use Checklist" for high-risk tasks</li>
-                </ul>
-            </div>
-            <div class="timeline-item">
-                <h3>Instrument the trust gap</h3>
-                <ul>
-                    <li>Lightweight survey: "What's stopping you?"</li>
-                    <li>Track: trust messaging → first task completion</li>
-                </ul>
-            </div>
-            <div class="timeline-item">
-                <h3>Onboarding templates</h3>
-                <ul>
-                    <li>5 persona-based starter prompts</li>
-                    <li>Reduces "blank page" problem</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- SLIDE 23: 60 DAYS -->
-    <section class="slide">
-        <h2 class="reveal">60 Days: Make Discovery Effortless</h2>
-        <p class="reveal"><strong>Problem:</strong> Officers don't know which AIBots exist or which ones are high-quality</p>
-        <div class="timeline reveal">
-            <div class="timeline-item">
-                <h3>AIBot Marketplace (MVP)</h3>
-                <ul>
-                    <li>Curated directory of top 50 AIBots by use case</li>
-                    <li>Show: Creator, use case, # of users, avg rating</li>
-                    <li>Filter by: Agency, function, task type</li>
-                </ul>
-            </div>
-            <div class="timeline-item">
-                <h3>Quality signals</h3>
-                <ul>
-                    <li>"Verified" badge for tested AIBots</li>
-                    <li>Usage stats: "Used by 200+ officers across 15 agencies"</li>
-                </ul>
-            </div>
-            <div class="timeline-item">
-                <h3>Personalized recommendations</h3>
-                <ul>
-                    <li>"Officers in your agency are using these AIBots"</li>
-                    <li>Based on: Agency, job function, similar behavior</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- SLIDE 24: 90 DAYS -->
-    <section class="slide">
-        <h2 class="reveal">90 Days: Make Adoption Compounding</h2>
-        <p class="reveal"><strong>Problem:</strong> Individual adoption doesn't spread to teams</p>
-        <div class="timeline reveal">
-            <div class="timeline-item">
-                <h3>Team-level visibility (without surveillance)</h3>
-                <ul>
-                    <li>Agency dashboard: "Top 10 AIBots used in your agency"</li>
-                    <li>"Common prompts" library from high-performing users</li>
-                </ul>
-            </div>
-            <div class="timeline-item">
-                <h3>Onboarding kits by agency</h3>
-                <ul>
-                    <li>Partner with 5 agencies with low adoption (<50%)</li>
-                    <li>Agency-specific starter packs</li>
-                    <li>30-min "Pair Chat Office Hours"</li>
-                </ul>
-            </div>
-            <div class="timeline-item">
-                <h3>Measure compounding</h3>
-                <ul>
-                    <li>Track: % discovering via colleague recommendation</li>
-                    <li>Track: % of AIBots shared across teams</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- SLIDE 25: WHAT I'M NOT DOING -->
-    <section class="slide">
-        <h2 class="reveal">What I'm NOT Doing (and Why)</h2>
-        <div class="callout warning reveal">
-            <h3>Not Doing:</h3>
-            <ul>
-                <li>❌ New features (e.g., Pair Scribe, new integrations)</li>
-                <li>❌ Model upgrades (Claude Sonnet 4 is already strong)</li>
-                <li>❌ Expanding to citizen-facing use cases</li>
-            </ul>
-        </div>
-        <div class="reveal" style="margin-top: 2rem;">
-            <h3>Why:</h3>
-            <p>The bottleneck is <strong>adoption</strong>, not <strong>capability</strong>. New features add complexity before we've nailed the core loop. Focus beats breadth in the next 90 days.</p>
-        </div>
-        <div class="callout info reveal">
-            <h3>When I'd Revisit:</h3>
-            <ul>
-                <li>If activation rate hits 70%+ (trust problem solved)</li>
-                <li>If AIBot marketplace shows clear demand for missing capabilities</li>
-                <li>If case studies reveal capability gaps</li>
-            </ul>
-        </div>
-    </section>
-
-    <!-- SLIDE 26: THE CLOSE -->
-    <section class="slide">
-        <h2 class="reveal">The One Thing That Matters</h2>
-        <div class="callout reveal" style="background: rgba(16, 185, 129, 0.15); border-left-width: 6px;">
-            <p style="font-size: 1.4rem; font-weight: 600; color: var(--text-primary); margin-bottom: 1rem;">
-                Trust is the unlock.
-            </p>
-            <p style="font-size: 1.1rem;">
-                Pair Chat has proven it can create value—832,280 hours saved monthly, 20,000 AIBots, 95% compliance rates in healthcare.
-            </p>
-            <p style="font-size: 1.1rem;">
-                The next phase isn't about building more—it's about <strong>making what exists trustworthy, discoverable, and shareable</strong>.
-            </p>
-        </div>
+        </section>
         
-        <div class="callout warning reveal" style="margin-top: 2rem;">
-            <p style="font-weight: 600; font-size: 1.1rem;"><strong>My biggest fear?</strong> That trust messaging backfires and makes people MORE anxious.</p>
-            <p style="margin-top: 1rem;">I saw this in prototype testing—3 out of 10 officers said the banner made them worry about risks they hadn't considered.</p>
-        </div>
+        <!-- PROBLEM SECTION -->
+        <section id="problem">
+            <div class="container">
+                <p class="eyebrow">The Problem</p>
+                <h2>Government Work Was Slow</h2>
+                <p>
+                    Before Pair Chat, Singapore's public officers faced a challenge: they needed AI tools to work faster, but couldn't use consumer ChatGPT because of security concerns. Their sensitive government data couldn't leave the country or be logged by AI companies.
+                </p>
+                
+                <h3>The Real Friction Points</h3>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📄</div>
+                        <h4>Manual Document Writing</h4>
+                        <p>Officers spent hours drafting memos, reports, and emails from scratch.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔍</div>
+                        <h4>Research & Analysis</h4>
+                        <p>Finding patterns in data required manual review of hundreds of documents.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h4>Security Restrictions</h4>
+                        <p>They couldn't use public AI tools with classified or sensitive data.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
         
-        <p class="reveal" style="font-size: 1.1rem; margin-top: 2rem;">
-            <strong>If that happens,</strong> I'll pivot to onboarding templates and agency partnerships instead. I'll know within 30 days if this is working. If activation rate doesn't move 5%, I'll change course.
-        </p>
+        <!-- SOLUTION SECTION -->
+        <section id="solution" style="background: var(--color-bg-secondary);">
+            <div class="container">
+                <p class="eyebrow">The Solution</p>
+                <h2>Pair Chat: AI Built for Government</h2>
+                <p>
+                    OGP built Pair Chat in-house to solve this problem. It's like ChatGPT, but secure, free, and customized for Singapore Government workflows.
+                </p>
+                
+                <h3>4 Core Features</h3>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">💬</div>
+                        <h4>Chat</h4>
+                        <p class="eyebrow" style="margin-bottom: var(--spacing-xs);">Like ChatGPT</p>
+                        <p>Start a conversation for any writing, analysis, or coding task.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🤖</div>
+                        <h4>Assistants</h4>
+                        <p class="eyebrow" style="margin-bottom: var(--spacing-xs);">Automation</p>
+                        <p>Create reusable AI helpers for repetitive tasks your team does daily.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h4>Batch Jobs</h4>
+                        <p class="eyebrow" style="margin-bottom: var(--spacing-xs);">Bulk Processing</p>
+                        <p>Process thousands of items at once instead of one at a time.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📝</div>
+                        <h4>Templates</h4>
+                        <p class="eyebrow" style="margin-bottom: var(--spacing-xs);">Pre-built Formats</p>
+                        <p>Pre-formatted templates for government documents (memos, briefs, etc).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
         
-        <div class="callout info reveal" style="margin-top: 2rem;">
-            <p style="font-weight: 600; font-size: 1.1rem;"><strong>But I believe this is the right bet.</strong></p>
-            <p style="margin-top: 1rem;">Because when I talked to the officers who DO use Pair Chat—the ones who created Proph Abby, the BCA compliance reviewers, the PA interpreters—they all said the same thing:</p>
-            <p style="font-style: italic; margin-top: 1rem; font-size: 1.2rem; color: var(--accent-green);">"Once I trusted it, I couldn't imagine working without it."</p>
-        </div>
-        
-        <p class="reveal" style="font-size: 1.2rem; margin-top: 2rem;">
-            If we close the activation gap, we don't just add 14,000 users. We unlock <strong style="color: var(--accent-green);">network effects</strong>: more AIBots, more shared knowledge, more compounding value.
-        </p>
-        <p class="reveal" style="font-size: 1.3rem; font-weight: 600; color: var(--accent-amber); margin-top: 2rem;">
-            That's the platform play. And that's what I'd build in the next 90 days.
-        </p>
-    </section>
-
-    <!-- SLIDE 27: APPENDIX - COMPETITIVE POSITIONING -->
-    <section class="slide">
-        <h2 class="reveal">Appendix: Competitive Positioning</h2>
-        <table class="reveal">
-            <thead>
-                <tr>
-                    <th>Dimension</th>
-                    <th>Pair Chat</th>
-                    <th>ChatGPT</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>Data Classification</strong></td>
-                    <td>RESTRICTED/SENSITIVE NORMAL</td>
-                    <td>Public only</td>
-                </tr>
-                <tr>
-                    <td><strong>Cost</strong></td>
-                    <td>Free</td>
-                    <td>$20/month</td>
-                </tr>
-                <tr>
-                    <td><strong>Logging</strong></td>
-                    <td>No LLM provider logging</td>
-                    <td>Logged for training</td>
-                </tr>
-                <tr>
-                    <td><strong>Context</strong></td>
-                    <td>Singapore gov-specific</td>
-                    <td>General purpose</td>
-                </tr>
-                <tr>
-                    <td><strong>Integration</strong></td>
-                    <td>Azure AD, GSIB devices</td>
-                    <td>Public access</td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="reveal" style="margin-top: 2rem;">
-            <h3>Moats:</h3>
-            <ol>
-                <li><strong>Regulatory:</strong> Government data clearance (commercial tools can't match)</li>
-                <li><strong>Network effects:</strong> 20,000 AIBots create institutional knowledge</li>
-                <li><strong>Integration:</strong> Deep gov system integration</li>
-                <li><strong>Trust:</strong> Rigorous evaluation (Pair Rome suite)</li>
-            </ol>
-        </div>
-    </section>
-
-    <!-- SLIDE 28: APPENDIX - KEY METRICS -->
-    <section class="slide">
-        <h2 class="reveal">Appendix: Key Metrics Summary</h2>
-        <table class="reveal">
-            <thead>
-                <tr>
-                    <th>Metric</th>
-                    <th>Value</th>
-                    <th>Insight</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>MAU</strong></td>
-                    <td>78,517</td>
-                    <td>70% of public service</td>
-                </tr>
-                <tr>
-                    <td><strong>Registered Users</strong></td>
-                    <td>149,000</td>
-                    <td>47% activation gap</td>
-                </tr>
-                <tr>
-                    <td><strong>Hours Saved/Month</strong></td>
-                    <td>832,280</td>
-                    <td>59 min/task avg</td>
-                </tr>
-                <tr>
-                    <td><strong>Monthly Savings</strong></td>
-                    <td>$28.9M</td>
-                    <td>vs. $450K dev cost</td>
-                </tr>
-                <tr>
-                    <td><strong>AIBots Created</strong></td>
-                    <td>20,000+</td>
-                    <td>Platform signal</td>
-                </tr>
-                <tr>
-                    <td><strong>User Satisfaction</strong></td>
-                    <td>4.2/5</td>
-                    <td>Strong product-market fit</td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
-
-    <!-- SLIDE 29: APPENDIX - QUESTIONS -->
-    <section class="slide">
-        <h2 class="reveal">Appendix: Questions This Raises</h2>
-        <ol class="reveal">
-            <li><strong>How do we measure the $28.9M savings claim?</strong> (Self-reported? Validated?)</li>
-            <li><strong>What's the quality distribution of 20,000 AIBots?</strong> (Top 10% vs. bottom 10%?)</li>
-            <li><strong>Why did 70,000 people register but not activate?</strong> (Need user research)</li>
-            <li><strong>What's the retention curve?</strong> (D1, D7, D30 retention rates?)</li>
-            <li><strong>How do we prevent AIBot sprawl?</strong> (Governance model?)</li>
-        </ol>
-    </section>
-
+        <!-- IMPACT SECTION -->
+        <section id="impact">
+            <div class="container">
+                <p class="eyebrow">The Impact</p>
+                <h2>The Numbers That Matter</h2>
+                <p>
+                    Pair Chat isn't just popular—it's creating real value for Singapore's government.
+                </p>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">78.5K</div>
+                        <div class="stat-label">Active Monthly Users (Q3 2025)</div>
+                        <div class="stat-description">Nearly 1 in 2 public officers in Singapore</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">59 min</div>
+                        <div class="stat-label">Saved Per Task</div>
+                        <div class="stat-description">Average time saved on each task officers complete</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">$28.9M</div>
+                        <div class="stat-label">Estimated Monthly Savings</div>
+                        <div class="stat-description">Value created for the government</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">$123</div>
+                        <div class="stat-label">Value Per Dollar Spent</div>
+                        <div class="stat-description">For every $1 invested, creates $123 in savings</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
     <script>
-        /* ===========================================
-           SLIDE PRESENTATION CONTROLLER
-           Handles navigation, animations, and interactions
-           =========================================== */
-
-        class SlidePresentation {
-            constructor() {
-                this.slides = document.querySelectorAll('.slide');
-                this.currentSlide = 0;
-                this.progressBar = document.querySelector('.progress-bar');
-                this.navDots = document.querySelector('.nav-dots');
+        // Theme Toggle
+        const ThemeManager = (() => {
+            const STORAGE_KEY = 'pair-teardown-theme';
+            const LIGHT_THEME = 'light';
+            const DARK_THEME = 'dark';
+            
+            const getTheme = () => {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) return stored;
                 
-                this.init();
-            }
-
-            init() {
-                // Create navigation dots
-                this.createNavDots();
+                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    return DARK_THEME;
+                }
+                return LIGHT_THEME;
+            };
+            
+            const setTheme = (theme) => {
+                const html = document.documentElement;
+                html.setAttribute('data-theme', theme);
+                localStorage.setItem(STORAGE_KEY, theme);
+                updateToggleIcon(theme);
+            };
+            
+            const updateToggleIcon = (theme) => {
+                const btn = document.getElementById('theme-toggle');
+                if (btn) {
+                    btn.textContent = theme === DARK_THEME ? '☀️' : '🌙';
+                }
+            };
+            
+            const toggle = () => {
+                const current = localStorage.getItem(STORAGE_KEY) || getTheme();
+                const next = current === LIGHT_THEME ? DARK_THEME : LIGHT_THEME;
+                setTheme(next);
+            };
+            
+            const init = () => {
+                const theme = getTheme();
+                setTheme(theme);
                 
-                // Set up observers
-                this.setupIntersectionObserver();
-                
-                // Bind events
-                this.bindEvents();
-                
-                // Show first slide
-                this.slides[0].classList.add('visible');
-                this.updateProgress();
-            }
-
-            createNavDots() {
-                this.slides.forEach((slide, index) => {
-                    const dot = document.createElement('div');
-                    dot.className = 'nav-dot';
-                    if (index === 0) dot.classList.add('active');
-                    dot.addEventListener('click', () => this.goToSlide(index));
-                    this.navDots.appendChild(dot);
-                });
-            }
-
-            setupIntersectionObserver() {
-                const options = {
-                    root: null,
-                    threshold: 0.5
-                };
-
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('visible');
-                            
-                            // Update current slide index
-                            const slideIndex = Array.from(this.slides).indexOf(entry.target);
-                            this.currentSlide = slideIndex;
-                            this.updateProgress();
-                            this.updateNavDots();
-                        }
-                    });
-                }, options);
-
-                this.slides.forEach(slide => observer.observe(slide));
-            }
-
-            bindEvents() {
-                // Keyboard navigation
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'ArrowRight' || e.key === ' ') {
-                        e.preventDefault();
-                        this.nextSlide();
-                    } else if (e.key === 'ArrowLeft') {
-                        e.preventDefault();
-                        this.prevSlide();
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                    if (!localStorage.getItem(STORAGE_KEY)) {
+                        setTheme(e.matches ? DARK_THEME : LIGHT_THEME);
                     }
                 });
-
-                // Touch/swipe support
-                let touchStartY = 0;
-                let touchEndY = 0;
-
-                document.addEventListener('touchstart', (e) => {
-                    touchStartY = e.changedTouches[0].screenY;
-                });
-
-                document.addEventListener('touchend', (e) => {
-                    touchEndY = e.changedTouches[0].screenY;
-                    this.handleSwipe();
-                });
-
-                const handleSwipe = () => {
-                    if (touchStartY - touchEndY > 50) {
-                        this.nextSlide();
-                    } else if (touchEndY - touchStartY > 50) {
-                        this.prevSlide();
-                    }
-                };
-
-                this.handleSwipe = handleSwipe;
-            }
-
-            nextSlide() {
-                if (this.currentSlide < this.slides.length - 1) {
-                    this.goToSlide(this.currentSlide + 1);
+                
+                const btn = document.getElementById('theme-toggle');
+                if (btn) {
+                    btn.addEventListener('click', toggle);
                 }
-            }
-
-            prevSlide() {
-                if (this.currentSlide > 0) {
-                    this.goToSlide(this.currentSlide - 1);
-                }
-            }
-
-            goToSlide(index) {
-                this.slides[index].scrollIntoView({ behavior: 'smooth' });
-            }
-
-            updateProgress() {
-                const progress = ((this.currentSlide + 1) / this.slides.length) * 100;
-                this.progressBar.style.width = `${progress}%`;
-            }
-
-            updateNavDots() {
-                const dots = this.navDots.querySelectorAll('.nav-dot');
-                dots.forEach((dot, index) => {
-                    dot.classList.toggle('active', index === this.currentSlide);
-                });
-            }
+            };
+            
+            return { init };
+        })();
+        
+        // Initialize
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', ThemeManager.init);
+        } else {
+            ThemeManager.init();
         }
-
-        // Initialize presentation
-        new SlidePresentation();
     </script>
 </body>
 </html>
