@@ -318,6 +318,11 @@
             text-decoration: underline;
             transition: color var(--transition-fast);
             cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            font-family: inherit;
+            font-weight: inherit;
         }
         
         .hero-nav-link:hover {
@@ -529,21 +534,22 @@
          }
          
          .floating-nav-link {
-             display: flex;
-             flex-direction: column;
-             align-items: center;
-             justify-content: center;
-             gap: 4px;
-             padding: var(--spacing-xs) var(--spacing-sm);
-             border-radius: 8px;
-             font-size: var(--font-size-xs);
-             font-weight: var(--font-weight-semibold);
-             color: var(--color-text-secondary);
-             background: var(--color-bg-tertiary);
-             border: 1px solid var(--color-border-default);
-             transition: all var(--transition-normal) cubic-bezier(0.4, 0, 0.2, 1);
-             position: relative;
-             text-align: center;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              gap: 4px;
+              padding: var(--spacing-xs) var(--spacing-sm);
+              border-radius: 8px;
+              font-size: var(--font-size-xs);
+              font-weight: var(--font-weight-semibold);
+              color: var(--color-text-secondary);
+              background: var(--color-bg-tertiary);
+              border: 1px solid var(--color-border-default);
+              transition: all var(--transition-normal) cubic-bezier(0.4, 0, 0.2, 1);
+              position: relative;
+              text-align: center;
+              cursor: pointer;
          }
          
          .nav-icon {
@@ -802,12 +808,12 @@
                      <div class="hero-nav">
                          <p>Jump to:</p>
                          <div class="hero-nav-links">
-                             <a href="#problem" class="hero-nav-link">Problem</a>
-                             <a href="#solution" class="hero-nav-link">Solution</a>
-                             <a href="#adoption" class="hero-nav-link">The Gap</a>
-                             <a href="#solutions" class="hero-nav-link">Recommendations</a>
-                             <a href="#tools" class="hero-nav-link">AI Agents</a>
-                             <a href="#roadmap" class="hero-nav-link">Roadmap</a>
+                             <button class="hero-nav-link" data-scroll-to="problem">Problem</button>
+                             <button class="hero-nav-link" data-scroll-to="solution">Solution</button>
+                             <button class="hero-nav-link" data-scroll-to="adoption">The Gap</button>
+                             <button class="hero-nav-link" data-scroll-to="solutions">Recommendations</button>
+                             <button class="hero-nav-link" data-scroll-to="tools">AI Agents</button>
+                             <button class="hero-nav-link" data-scroll-to="roadmap">Roadmap</button>
                          </div>
                      </div>
                 </div>
@@ -1234,39 +1240,39 @@
          </section>
      </main>
 
-     <!-- Floating Bottom Navigation -->
-     <nav id="floating-nav" class="floating-nav" style="display: none;">
-         <div class="floating-nav-content">
-             <a href="#problem" class="floating-nav-link" title="Problem">
-                 <span class="nav-icon">🎯</span>
-                 <span class="nav-label">Problem</span>
-             </a>
-              <a href="#solution" class="floating-nav-link" title="Solution">
+      <!-- Floating Bottom Navigation -->
+      <nav id="floating-nav" class="floating-nav" style="display: none;">
+          <div class="floating-nav-content">
+              <button class="floating-nav-link" data-scroll-to="problem" title="Problem">
+                  <span class="nav-icon">🎯</span>
+                  <span class="nav-label">Problem</span>
+              </button>
+              <button class="floating-nav-link" data-scroll-to="solution" title="Solution">
                   <span class="nav-icon">💡</span>
                   <span class="nav-label">Solution</span>
-              </a>
-              <a href="#impact" class="floating-nav-link" title="Impact">
+              </button>
+              <button class="floating-nav-link" data-scroll-to="impact" title="Impact">
                   <span class="nav-icon">📈</span>
                   <span class="nav-label">Impact</span>
-              </a>
-              <a href="#adoption" class="floating-nav-link" title="Gap">
-                 <span class="nav-icon">📊</span>
-                 <span class="nav-label">Gap</span>
-             </a>
-             <a href="#solutions" class="floating-nav-link" title="Recommendations">
-                 <span class="nav-icon">🎨</span>
-                 <span class="nav-label">Recs</span>
-             </a>
-             <a href="#tools" class="floating-nav-link" title="AI Agents">
-                 <span class="nav-icon">🤖</span>
-                 <span class="nav-label">Agents</span>
-             </a>
-             <a href="#roadmap" class="floating-nav-link" title="Roadmap">
-                 <span class="nav-icon">🗺️</span>
-                 <span class="nav-label">Road</span>
-             </a>
-         </div>
-     </nav>
+              </button>
+              <button class="floating-nav-link" data-scroll-to="adoption" title="Gap">
+                  <span class="nav-icon">📊</span>
+                  <span class="nav-label">Gap</span>
+              </button>
+              <button class="floating-nav-link" data-scroll-to="solutions" title="Recommendations">
+                  <span class="nav-icon">🎨</span>
+                  <span class="nav-label">Recs</span>
+              </button>
+              <button class="floating-nav-link" data-scroll-to="tools" title="AI Agents">
+                  <span class="nav-icon">🤖</span>
+                  <span class="nav-label">Agents</span>
+              </button>
+              <button class="floating-nav-link" data-scroll-to="roadmap" title="Roadmap">
+                  <span class="nav-icon">🗺️</span>
+                  <span class="nav-label">Road</span>
+              </button>
+          </div>
+      </nav>
      
      <script>
         // Theme Toggle
@@ -1350,27 +1356,39 @@
          
          PlatformDetection.init();
          
-         // Floating Navigation Manager
-         const FloatingNav = (() => {
-             const floatingNav = document.getElementById('floating-nav');
-             const heroSection = document.querySelector('.hero');
-             const navLinks = document.querySelectorAll('.floating-nav-link');
+          // Floating Navigation Manager
+          const FloatingNav = (() => {
+              const floatingNav = document.getElementById('floating-nav');
+              const heroSection = document.querySelector('.hero');
+              const navLinks = document.querySelectorAll('.floating-nav-link');
+              
+              if (!floatingNav) return;
+              
+              const sections = [
+                  { id: 'problem', link: floatingNav.querySelector('[data-scroll-to="problem"]') },
+                  { id: 'solution', link: floatingNav.querySelector('[data-scroll-to="solution"]') },
+                  { id: 'impact', link: floatingNav.querySelector('[data-scroll-to="impact"]') },
+                  { id: 'adoption', link: floatingNav.querySelector('[data-scroll-to="adoption"]') },
+                  { id: 'solutions', link: floatingNav.querySelector('[data-scroll-to="solutions"]') },
+                  { id: 'tools', link: floatingNav.querySelector('[data-scroll-to="tools"]') },
+                  { id: 'roadmap', link: floatingNav.querySelector('[data-scroll-to="roadmap"]') }
+              ];
              
-             if (!floatingNav) return;
-             
-             const sections = [
-                 { id: 'problem', link: floatingNav.querySelector('a[href="#problem"]') },
-                 { id: 'solution', link: floatingNav.querySelector('a[href="#solution"]') },
-                 { id: 'impact', link: floatingNav.querySelector('a[href="#impact"]') },
-                 { id: 'adoption', link: floatingNav.querySelector('a[href="#adoption"]') },
-                 { id: 'solutions', link: floatingNav.querySelector('a[href="#solutions"]') },
-                 { id: 'tools', link: floatingNav.querySelector('a[href="#tools"]') },
-                 { id: 'roadmap', link: floatingNav.querySelector('a[href="#roadmap"]') }
-             ];
-             
-             const init = () => {
-                 window.addEventListener('scroll', handleScroll);
-             };
+              const init = () => {
+                  window.addEventListener('scroll', handleScroll);
+                  
+                  // Add click handlers to all scroll buttons
+                  document.querySelectorAll('[data-scroll-to]').forEach(btn => {
+                      btn.addEventListener('click', (e) => {
+                          e.preventDefault();
+                          const targetId = btn.getAttribute('data-scroll-to');
+                          const target = document.getElementById(targetId);
+                          if (target) {
+                              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }
+                      });
+                  });
+              };
              
              const handleScroll = () => {
                  toggleFloatingNav();
