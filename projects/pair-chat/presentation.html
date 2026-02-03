@@ -324,14 +324,22 @@
             display: none;
         }
         
-        @media (max-width: 768px) {
-            .hero-nav-links {
-                flex-wrap: nowrap;
-                overflow-x: auto;
-                gap: var(--spacing-sm);
-                max-width: 100%;
-            }
-        }
+         @media (max-width: 768px) {
+             .hero-nav-links {
+                 flex-wrap: nowrap;
+                 overflow-x: auto;
+                 gap: var(--spacing-sm);
+                 max-width: 100%;
+             }
+             
+             table {
+                 font-size: var(--font-size-xs) !important;
+             }
+             
+             table th, table td {
+                 padding: 0.5rem 0.4rem !important;
+             }
+         }
         
         .hero-nav-link {
             font-size: var(--font-size-xs);
@@ -1052,14 +1060,14 @@
                      Pair Chat's foundation is strong. The next frontier is specialized AI agents—each optimized for specific government workflows. Here's the vision.
                  </p>
                  
-                 <div style="margin: var(--spacing-xl) 0; width: 100%; overflow-x: hidden;">
-                     <table style="width: 100%; border-collapse: collapse; font-size: var(--font-size-sm); table-layout: fixed;">
-                         <thead>
-                             <tr style="border-bottom: 2px solid var(--color-border-default);">
-                                 <th style="text-align: left; padding: var(--spacing-md); color: var(--color-text-primary); font-weight: var(--font-weight-semibold); word-wrap: break-word;">Agent Type</th>
-                                 <th style="text-align: left; padding: var(--spacing-md); color: var(--color-text-primary); font-weight: var(--font-weight-semibold); word-wrap: break-word;">Use Cases</th>
-                                 <th style="text-align: left; padding: var(--spacing-md); color: var(--color-text-primary); font-weight: var(--font-weight-semibold); word-wrap: break-word;">Model</th>
-                                 <th style="text-align: left; padding: var(--spacing-md); color: var(--color-text-primary); font-weight: var(--font-weight-semibold); word-wrap: break-word;">Why This Model</th>
+                  <div style="margin: var(--spacing-xl) 0; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch;">
+                      <table style="width: 100%; border-collapse: collapse; font-size: var(--font-size-sm); table-layout: auto; min-width: 600px;">
+                          <thead>
+                              <tr style="border-bottom: 2px solid var(--color-border-default);">
+                                  <th style="text-align: left; padding: var(--spacing-md); color: var(--color-text-primary); font-weight: var(--font-weight-semibold); word-wrap: break-word; min-width: 120px;">Agent Type</th>
+                                  <th style="text-align: left; padding: var(--spacing-md); color: var(--color-text-primary); font-weight: var(--font-weight-semibold); word-wrap: break-word; min-width: 150px;">Use Cases</th>
+                                  <th style="text-align: left; padding: var(--spacing-md); color: var(--color-text-primary); font-weight: var(--font-weight-semibold); word-wrap: break-word; min-width: 120px;">Model</th>
+                                  <th style="text-align: left; padding: var(--spacing-md); color: var(--color-text-primary); font-weight: var(--font-weight-semibold); word-wrap: break-word; min-width: 150px;">Why This Model</th>
                              </tr>
                          </thead>
                          <tbody>
@@ -1122,14 +1130,14 @@
                      Pair Chat isn't competing with ChatGPT in the consumer space. It's a different category: secure, government-optimized AI. Here's how it stacks up.
                  </p>
                  
-                 <div style="margin: var(--spacing-xl) 0; width: 100%; overflow-x: hidden;">
-                     <table style="width: 100%; border-collapse: collapse; font-size: var(--font-size-sm); table-layout: fixed;">
-                         <thead>
-                             <tr style="border-bottom: 2px solid var(--color-border-default);">
-                                 <th style="text-align: left; padding: var(--spacing-md); color: var(--color-text-primary); font-weight: var(--font-weight-semibold); word-wrap: break-word;">Feature</th>
-                                 <th style="text-align: center; padding: var(--spacing-md); color: var(--color-text-primary); font-weight: var(--font-weight-semibold); word-wrap: break-word;">Pair Chat</th>
-                                 <th style="text-align: center; padding: var(--spacing-md); color: var(--color-text-primary); font-weight: var(--font-weight-semibold); word-wrap: break-word;">ChatGPT</th>
-                                 <th style="text-align: center; padding: var(--spacing-md); color: var(--color-text-primary); font-weight: var(--font-weight-semibold); word-wrap: break-word;">UK GDS Roadmap*</th>
+                  <div style="margin: var(--spacing-xl) 0; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch;">
+                      <table style="width: 100%; border-collapse: collapse; font-size: var(--font-size-sm); table-layout: auto; min-width: 600px;">
+                          <thead>
+                              <tr style="border-bottom: 2px solid var(--color-border-default);">
+                                  <th style="text-align: left; padding: var(--spacing-md); color: var(--color-text-primary); font-weight: var(--font-weight-semibold); word-wrap: break-word; min-width: 140px;">Feature</th>
+                                  <th style="text-align: center; padding: var(--spacing-md); color: var(--color-text-primary); font-weight: var(--font-weight-semibold); word-wrap: break-word; min-width: 110px;">Pair Chat</th>
+                                  <th style="text-align: center; padding: var(--spacing-md); color: var(--color-text-primary); font-weight: var(--font-weight-semibold); word-wrap: break-word; min-width: 100px;">ChatGPT</th>
+                                  <th style="text-align: center; padding: var(--spacing-md); color: var(--color-text-primary); font-weight: var(--font-weight-semibold); word-wrap: break-word; min-width: 120px;">UK GDS Roadmap*</th>
                              </tr>
                          </thead>
                          <tbody>
