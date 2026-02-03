@@ -107,11 +107,15 @@
         /* ===========================================
            RESET & BASE STYLES
            =========================================== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+         * {
+             margin: 0;
+             padding: 0;
+             box-sizing: border-box;
+         }
+         
+         *:first-child {
+             margin-top: 0;
+         }
         
          html {
              scroll-behavior: smooth;
@@ -556,6 +560,13 @@
              color: white;
              border-color: var(--color-accent-primary);
              transform: scale(1.05);
+         }
+         
+         .floating-nav-link.active {
+             background: var(--color-accent-primary);
+             color: white;
+             border-color: var(--color-accent-primary);
+             font-weight: var(--font-weight-bold);
          }
          
          /* ===========================================
@@ -1320,11 +1331,26 @@
          const FloatingNav = (() => {
              const floatingNav = document.getElementById('floating-nav');
              const heroSection = document.querySelector('.hero');
+             const navLinks = document.querySelectorAll('.floating-nav-link');
              
              if (!floatingNav) return;
              
+             const sections = [
+                 { id: 'problem', link: floatingNav.querySelector('a[href="#problem"]') },
+                 { id: 'solution', link: floatingNav.querySelector('a[href="#solution"]') },
+                 { id: 'adoption', link: floatingNav.querySelector('a[href="#adoption"]') },
+                 { id: 'solutions', link: floatingNav.querySelector('a[href="#solutions"]') },
+                 { id: 'tools', link: floatingNav.querySelector('a[href="#tools"]') },
+                 { id: 'roadmap', link: floatingNav.querySelector('a[href="#roadmap"]') }
+             ];
+             
              const init = () => {
-                 window.addEventListener('scroll', toggleFloatingNav);
+                 window.addEventListener('scroll', handleScroll);
+             };
+             
+             const handleScroll = () => {
+                 toggleFloatingNav();
+                 highlightActiveSection();
              };
              
              const toggleFloatingNav = () => {
@@ -1343,6 +1369,31 @@
                              floatingNav.style.display = 'none';
                          }
                      }, 300);
+                 }
+             };
+             
+             const highlightActiveSection = () => {
+                 let currentSection = null;
+                 const scrollTop = window.scrollY + 200;
+                 
+                 sections.forEach(section => {
+                     const element = document.getElementById(section.id);
+                     if (element) {
+                         const sectionTop = element.offsetTop;
+                         const sectionBottom = sectionTop + element.offsetHeight;
+                         
+                         if (scrollTop >= sectionTop && scrollTop < sectionBottom) {
+                             currentSection = section;
+                         }
+                     }
+                 });
+                 
+                 // Remove active class from all links
+                 navLinks.forEach(link => link.classList.remove('active'));
+                 
+                 // Add active class to current section
+                 if (currentSection && currentSection.link) {
+                     currentSection.link.classList.add('active');
                  }
              };
              
