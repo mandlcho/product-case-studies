@@ -543,18 +543,33 @@
             }
         }
         
-        @keyframes countUp {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-        
-        .hero-content {
-            animation: fadeInUp 0.6s ease-out;
-        }
+         @keyframes countUp {
+             from {
+                 opacity: 0;
+             }
+             to {
+                 opacity: 1;
+             }
+         }
+         
+         @keyframes barSlideIn {
+             from {
+                 width: 0;
+                 opacity: 0;
+             }
+             to {
+                 width: auto;
+                 opacity: 1;
+             }
+         }
+         
+         .bar-active, .bar-gap, .bar-target, .bar-target-gap {
+             transform-origin: left;
+         }
+         
+         .hero-content {
+             animation: fadeInUp 0.6s ease-out;
+         }
         
         /* Reduce motion support */
         @media (prefers-reduced-motion: reduce) {
@@ -723,50 +738,92 @@
                      Pair Chat reaches 78,500 officers, but the real story is the 81,500 who haven't adopted yet. Understanding this gap reveals the next frontier for growth.
                  </p>
                  
-                 <!-- Funnel Visualization with Scroll Animation -->
-                 <div id="funnel-container" style="margin: var(--spacing-xl) 0; display: flex; justify-content: center; position: relative; min-height: 600px;">
-                     <svg id="adoption-funnel" viewBox="0 0 600 500" style="max-width: 100%; height: auto; max-height: 500px; position: sticky; top: 100px;">
-                         <!-- Background -->
-                         <defs>
-                             <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
-                                 <stop offset="0%" style="stop-color:var(--color-accent-primary);stop-opacity:0.15" />
-                                 <stop offset="100%" style="stop-color:var(--color-accent-secondary);stop-opacity:0.15" />
-                             </linearGradient>
-                         </defs>
+                 <!-- Bar Chart Visualization: Adoption + Opportunity -->
+                 <div id="chart-container" style="margin: var(--spacing-xl) 0; padding: var(--spacing-lg); background: var(--color-bg-primary); border-radius: var(--radius-lg); border: 1px solid var(--color-border-default);">
+                     <div style="margin-bottom: var(--spacing-xl);">
+                         <!-- Chart Title -->
+                         <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--spacing-lg);">
+                             <h3 style="margin: 0;">Adoption Rate & Opportunity Gap</h3>
+                             <p style="font-size: var(--font-size-xs); color: var(--color-text-muted); margin: 0;">Total Eligible: 160,000</p>
+                         </div>
                          
-                         <!-- Stage 1: Eligible Officers -->
-                         <g id="stage-1">
-                             <polygon id="stage-1-poly" points="100,50 500,50 480,120 120,120" fill="var(--color-accent-primary)" opacity="0.2" stroke="var(--color-accent-primary)" stroke-width="2"/>
-                             <text x="300" y="95" text-anchor="middle" font-size="24" font-weight="bold" fill="var(--color-text-primary)">160,000</text>
-                             <text x="300" y="135" text-anchor="middle" font-size="14" fill="var(--color-text-secondary)">Eligible Officers</text>
-                         </g>
+                         <!-- Main Bar Chart -->
+                         <svg viewBox="0 0 800 300" style="width: 100%; height: auto; max-width: 100%;">
+                             <!-- Y-axis labels -->
+                             <text x="20" y="25" font-size="14" fill="var(--color-text-secondary)" font-weight="500">All Officers</text>
+                             
+                             <!-- Main bar background (total 160K) -->
+                             <rect x="200" y="40" width="550" height="50" fill="var(--color-border-default)" opacity="0.3" rx="6"/>
+                             
+                             <!-- Active Users (78.5K) - Primary color -->
+                             <rect x="200" y="40" width="270" height="50" fill="var(--color-accent-primary)" rx="6" class="bar-active"/>
+                             
+                             <!-- Opportunity Gap (81.5K) - Secondary color -->
+                             <rect x="470" y="40" width="280" height="50" fill="var(--color-accent-secondary)" opacity="0.3" rx="6" class="bar-gap"/>
+                             
+                             <!-- Value labels on bar -->
+                             <text x="330" y="72" font-size="18" font-weight="bold" fill="white" text-anchor="middle">78,500 MAU (49%)</text>
+                             <text x="610" y="72" font-size="18" font-weight="bold" fill="var(--color-accent-secondary)" text-anchor="middle">81,500 Gap (51%)</text>
+                             
+                             <!-- Divider line between segments -->
+                             <line x1="470" y1="40" x2="470" y2="90" stroke="var(--color-bg-primary)" stroke-width="3"/>
+                             
+                             <!-- Bottom annotation -->
+                             <text x="25" y="130" font-size="12" fill="var(--color-text-muted)">Current State (Q3 2025)</text>
+                             
+                             <!-- Target State Bar (below) -->
+                             <text x="20" y="195" font-size="14" fill="var(--color-text-secondary)" font-weight="500">Target (Phase 1)</text>
+                             
+                             <!-- Target bar background -->
+                             <rect x="200" y="210" width="550" height="50" fill="var(--color-border-default)" opacity="0.3" rx="6"/>
+                             
+                             <!-- Target: 100K adopted -->
+                             <rect x="200" y="210" width="346" height="50" fill="var(--color-accent-primary)" rx="6" class="bar-target"/>
+                             
+                             <!-- Target: 60K remaining -->
+                             <rect x="546" y="210" width="204" height="50" fill="var(--color-accent-secondary)" opacity="0.3" rx="6" class="bar-target-gap"/>
+                             
+                             <!-- Value labels on target bar -->
+                             <text x="268" y="242" font-size="16" font-weight="bold" fill="white" text-anchor="middle">100,000 MAU (63%)</text>
+                             <text x="648" y="242" font-size="16" font-weight="bold" fill="var(--color-accent-secondary)" text-anchor="middle">60,000 (37%)</text>
+                             
+                             <!-- Divider line -->
+                             <line x1="546" y1="210" x2="546" y2="260" stroke="var(--color-bg-primary)" stroke-width="3"/>
+                             
+                             <!-- Bottom annotation -->
+                             <text x="25" y="300" font-size="12" fill="var(--color-text-muted)">6-Month Goal (Phase 1)</text>
+                             
+                             <!-- Legend -->
+                             <g>
+                                 <rect x="750" y="80" width="12" height="12" fill="var(--color-accent-primary)" rx="2"/>
+                                 <text x="768" y="90" font-size="12" fill="var(--color-text-secondary)">Active Users</text>
+                                 
+                                 <rect x="750" y="105" width="12" height="12" fill="var(--color-accent-secondary)" opacity="0.3" rx="2"/>
+                                 <text x="768" y="115" font-size="12" fill="var(--color-text-secondary)">Opportunity</text>
+                             </g>
+                         </svg>
+                     </div>
+                     
+                     <!-- Key Insights -->
+                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-md); margin-top: var(--spacing-xl);">
+                         <div style="padding: var(--spacing-md); background: var(--color-bg-secondary); border-radius: var(--radius-md); border-left: 3px solid var(--color-accent-primary);">
+                             <p style="font-size: var(--font-size-xs); color: var(--color-text-muted); margin: 0 0 var(--spacing-xs) 0;">Current Adoption</p>
+                             <p style="font-size: var(--font-size-2xl); font-weight: bold; color: var(--color-accent-primary); margin: 0;">49%</p>
+                             <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin: var(--spacing-xs) 0 0 0;">Of eligible officers</p>
+                         </div>
                          
-                         <!-- Arrow Down -->
-                         <line x1="300" y1="140" x2="300" y2="170" stroke="var(--color-border-default)" stroke-width="2" marker-end="url(#arrowhead)"/>
-                         <defs>
-                             <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                                 <polygon points="0 0, 10 5, 0 10" fill="var(--color-border-default)" />
-                             </marker>
-                         </defs>
+                         <div style="padding: var(--spacing-md); background: var(--color-bg-secondary); border-radius: var(--radius-md); border-left: 3px solid var(--color-accent-secondary);">
+                             <p style="font-size: var(--font-size-xs); color: var(--color-text-muted); margin: 0 0 var(--spacing-xs) 0;">Addressable Gap</p>
+                             <p style="font-size: var(--font-size-2xl); font-weight: bold; color: var(--color-accent-secondary); margin: 0;">81,500</p>
+                             <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin: var(--spacing-xs) 0 0 0;">Untapped officers</p>
+                         </div>
                          
-                         <!-- Stage 2: Active Users -->
-                         <g id="stage-2">
-                             <polygon id="stage-2-poly" points="130,180 470,180 430,280 170,280" fill="var(--color-accent-primary)" opacity="0.4" stroke="var(--color-accent-primary)" stroke-width="2"/>
-                             <text x="300" y="245" text-anchor="middle" font-size="24" font-weight="bold" fill="var(--color-text-primary)">78,500</text>
-                             <text x="300" y="285" text-anchor="middle" font-size="14" fill="var(--color-text-secondary)">Monthly Active Users</text>
-                         </g>
-                         
-                         <!-- Gap Highlight -->
-                         <g id="gap-highlight">
-                             <rect id="gap-rect" x="100" y="310" width="400" height="120" fill="var(--color-accent-secondary)" opacity="0.15" rx="8"/>
-                             <text x="300" y="340" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--color-accent-secondary)">THE GAP</text>
-                             <text id="gap-number" x="300" y="368" text-anchor="middle" font-size="28" font-weight="bold" fill="var(--color-text-primary)">81,500</text>
-                             <text id="gap-label" x="300" y="395" text-anchor="middle" font-size="14" fill="var(--color-text-secondary)">Untapped Officers (51% of eligible)</text>
-                         </g>
-                         
-                         <!-- Bottom annotation -->
-                         <text x="300" y="460" text-anchor="middle" font-size="12" fill="var(--color-text-muted)">Q3 2025 Data | Source: Pair Reports</text>
-                     </svg>
+                         <div style="padding: var(--spacing-md); background: var(--color-bg-secondary); border-radius: var(--radius-md); border-left: 3px solid var(--color-accent-primary);">
+                             <p style="font-size: var(--font-size-xs); color: var(--color-text-muted); margin: 0 0 var(--spacing-xs) 0;">Phase 1 Target</p>
+                             <p style="font-size: var(--font-size-2xl); font-weight: bold; color: var(--color-accent-primary); margin: 0;">100K</p>
+                             <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin: var(--spacing-xs) 0 0 0;">MAU in 6 months</p>
+                         </div>
+                     </div>
                  </div>
                  
                  <!-- Gap Analysis Cards -->
@@ -1124,77 +1181,47 @@
             ThemeManager.init();
         }
         
-        // Funnel Scroll Animation
-        const FunnelAnimation = (() => {
-            const stage1Poly = document.getElementById('stage-1-poly');
-            const stage2Poly = document.getElementById('stage-2-poly');
-            const gapRect = document.getElementById('gap-rect');
-            const gapNumber = document.getElementById('gap-number');
-            const gapLabel = document.getElementById('gap-label');
-            const funnelContainer = document.getElementById('funnel-container');
-            
-            if (!funnelContainer) return;
-            
-            const init = () => {
-                window.addEventListener('scroll', animateFunnel);
-            };
-            
-            const animateFunnel = () => {
-                const rect = funnelContainer.getBoundingClientRect();
-                const windowHeight = window.innerHeight;
-                
-                // Calculate scroll progress (0 to 1)
-                // 0 = funnel at bottom of screen, 1 = funnel at top of screen
-                const progress = Math.max(0, Math.min(1, 
-                    (windowHeight - rect.top) / (windowHeight + rect.height)
-                ));
-                
-                // Stage 1: Narrows from "100,50 500,50 480,120 120,120" to "200,50 400,50 380,120 220,120"
-                const stage1Start = "100,50 500,50 480,120 120,120";
-                const stage1End = "200,50 400,50 380,120 220,120";
-                stage1Poly.setAttribute('points', interpolatePoints(stage1Start, stage1End, progress));
-                
-                // Stage 2: Narrows from "130,180 470,180 430,280 170,280" to "250,180 350,180 330,280 270,280"
-                const stage2Start = "130,180 470,180 430,280 170,280";
-                const stage2End = "250,180 350,180 330,280 270,280";
-                stage2Poly.setAttribute('points', interpolatePoints(stage2Start, stage2End, progress));
-                
-                // Gap: Shrinks from x=100 width=400 to x=180 width=240
-                const gapX = 100 + (80 * progress);
-                const gapWidth = 400 - (160 * progress);
-                gapRect.setAttribute('x', gapX);
-                gapRect.setAttribute('width', gapWidth);
-                
-                // Gap number opacity and scale
-                const gapOpacity = Math.max(0.5, 1 - (progress * 0.3));
-                gapNumber.setAttribute('opacity', gapOpacity);
-                gapLabel.setAttribute('opacity', gapOpacity);
-                
-                // Optional: fade out stages as gap closes
-                stage1Poly.setAttribute('opacity', Math.max(0.1, 0.2 - (progress * 0.15)));
-                stage2Poly.setAttribute('opacity', Math.max(0.2, 0.4 - (progress * 0.25)));
-            };
-            
-            const interpolatePoints = (startStr, endStr, progress) => {
-                const startPoints = startStr.split(' ').map(p => parseFloat(p));
-                const endPoints = endStr.split(' ').map(p => parseFloat(p));
-                
-                const interpolated = startPoints.map((start, i) => {
-                    const end = endPoints[i];
-                    return start + (end - start) * progress;
-                });
-                
-                return interpolated.map((p, i) => i % 2 === 0 ? p : p).join(' ');
-            };
-            
-            return { init };
-        })();
-        
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', FunnelAnimation.init);
-        } else {
-            FunnelAnimation.init();
-        }
+         // Bar Chart Animation on Scroll
+         const BarChartAnimation = (() => {
+             const barActive = document.querySelector('.bar-active');
+             const barGap = document.querySelector('.bar-gap');
+             const barTarget = document.querySelector('.bar-target');
+             const barTargetGap = document.querySelector('.bar-target-gap');
+             const chartContainer = document.getElementById('chart-container');
+             
+             if (!chartContainer || !barActive) return;
+             
+             const init = () => {
+                 // Animate bars on page load
+                 animateBars();
+                 window.addEventListener('scroll', () => {
+                     const rect = chartContainer.getBoundingClientRect();
+                     const isVisible = rect.top < window.innerHeight * 0.8;
+                     if (isVisible) {
+                         barActive.style.animation = 'barSlideIn 0.8s ease-out forwards';
+                         barGap.style.animation = 'barSlideIn 0.8s ease-out 0.2s forwards';
+                         barTarget.style.animation = 'barSlideIn 0.8s ease-out 0.4s forwards';
+                         barTargetGap.style.animation = 'barSlideIn 0.8s ease-out 0.6s forwards';
+                     }
+                 });
+             };
+             
+             const animateBars = () => {
+                 // Initial animation on load
+                 if (barActive) barActive.style.animation = 'barSlideIn 0.8s ease-out forwards';
+                 if (barGap) barGap.style.animation = 'barSlideIn 0.8s ease-out 0.2s forwards';
+                 if (barTarget) barTarget.style.animation = 'barSlideIn 0.8s ease-out 0.4s forwards';
+                 if (barTargetGap) barTargetGap.style.animation = 'barSlideIn 0.8s ease-out 0.6s forwards';
+             };
+             
+             return { init };
+         })();
+         
+         if (document.readyState === 'loading') {
+             document.addEventListener('DOMContentLoaded', BarChartAnimation.init);
+         } else {
+             BarChartAnimation.init();
+         }
     </script>
 </body>
 </html>
