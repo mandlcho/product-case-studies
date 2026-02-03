@@ -677,9 +677,9 @@
                     Pair Chat reaches 78,500 officers, but the real story is the 81,500 who haven't adopted yet. Understanding this gap reveals the next frontier for growth.
                 </p>
                 
-                <!-- Funnel Visualization -->
-                <div style="margin: var(--spacing-xl) 0; display: flex; justify-content: center;">
-                    <svg viewBox="0 0 600 500" style="max-width: 100%; height: auto; max-height: 500px;">
+                <!-- Funnel Visualization with Scroll Animation -->
+                <div id="funnel-container" style="margin: var(--spacing-xl) 0; display: flex; justify-content: center; position: relative; min-height: 600px;">
+                    <svg id="adoption-funnel" viewBox="0 0 600 500" style="max-width: 100%; height: auto; max-height: 500px; position: sticky; top: 100px;">
                         <!-- Background -->
                         <defs>
                             <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -689,8 +689,8 @@
                         </defs>
                         
                         <!-- Stage 1: Eligible Officers -->
-                        <g>
-                            <polygon points="100,50 500,50 480,120 120,120" fill="var(--color-accent-primary)" opacity="0.2" stroke="var(--color-accent-primary)" stroke-width="2"/>
+                        <g id="stage-1">
+                            <polygon id="stage-1-poly" points="100,50 500,50 480,120 120,120" fill="var(--color-accent-primary)" opacity="0.2" stroke="var(--color-accent-primary)" stroke-width="2"/>
                             <text x="300" y="95" text-anchor="middle" font-size="24" font-weight="bold" fill="var(--color-text-primary)">160,000</text>
                             <text x="300" y="135" text-anchor="middle" font-size="14" fill="var(--color-text-secondary)">Eligible Officers</text>
                         </g>
@@ -704,18 +704,18 @@
                         </defs>
                         
                         <!-- Stage 2: Active Users -->
-                        <g>
-                            <polygon points="130,180 470,180 430,280 170,280" fill="var(--color-accent-primary)" opacity="0.4" stroke="var(--color-accent-primary)" stroke-width="2"/>
+                        <g id="stage-2">
+                            <polygon id="stage-2-poly" points="130,180 470,180 430,280 170,280" fill="var(--color-accent-primary)" opacity="0.4" stroke="var(--color-accent-primary)" stroke-width="2"/>
                             <text x="300" y="245" text-anchor="middle" font-size="24" font-weight="bold" fill="var(--color-text-primary)">78,500</text>
                             <text x="300" y="285" text-anchor="middle" font-size="14" fill="var(--color-text-secondary)">Monthly Active Users</text>
                         </g>
                         
                         <!-- Gap Highlight -->
-                        <g>
-                            <rect x="100" y="310" width="400" height="120" fill="var(--color-accent-secondary)" opacity="0.15" rx="8"/>
+                        <g id="gap-highlight">
+                            <rect id="gap-rect" x="100" y="310" width="400" height="120" fill="var(--color-accent-secondary)" opacity="0.15" rx="8"/>
                             <text x="300" y="340" text-anchor="middle" font-size="20" font-weight="bold" fill="var(--color-accent-secondary)">THE GAP</text>
-                            <text x="300" y="368" text-anchor="middle" font-size="28" font-weight="bold" fill="var(--color-text-primary)">81,500</text>
-                            <text x="300" y="395" text-anchor="middle" font-size="14" fill="var(--color-text-secondary)">Untapped Officers (51% of eligible)</text>
+                            <text id="gap-number" x="300" y="368" text-anchor="middle" font-size="28" font-weight="bold" fill="var(--color-text-primary)">81,500</text>
+                            <text id="gap-label" x="300" y="395" text-anchor="middle" font-size="14" fill="var(--color-text-secondary)">Untapped Officers (51% of eligible)</text>
                         </g>
                         
                         <!-- Bottom annotation -->
@@ -812,6 +812,78 @@
             document.addEventListener('DOMContentLoaded', ThemeManager.init);
         } else {
             ThemeManager.init();
+        }
+        
+        // Funnel Scroll Animation
+        const FunnelAnimation = (() => {
+            const stage1Poly = document.getElementById('stage-1-poly');
+            const stage2Poly = document.getElementById('stage-2-poly');
+            const gapRect = document.getElementById('gap-rect');
+            const gapNumber = document.getElementById('gap-number');
+            const gapLabel = document.getElementById('gap-label');
+            const funnelContainer = document.getElementById('funnel-container');
+            
+            if (!funnelContainer) return;
+            
+            const init = () => {
+                window.addEventListener('scroll', animateFunnel);
+            };
+            
+            const animateFunnel = () => {
+                const rect = funnelContainer.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+                
+                // Calculate scroll progress (0 to 1)
+                // 0 = funnel at bottom of screen, 1 = funnel at top of screen
+                const progress = Math.max(0, Math.min(1, 
+                    (windowHeight - rect.top) / (windowHeight + rect.height)
+                ));
+                
+                // Stage 1: Narrows from "100,50 500,50 480,120 120,120" to "200,50 400,50 380,120 220,120"
+                const stage1Start = "100,50 500,50 480,120 120,120";
+                const stage1End = "200,50 400,50 380,120 220,120";
+                stage1Poly.setAttribute('points', interpolatePoints(stage1Start, stage1End, progress));
+                
+                // Stage 2: Narrows from "130,180 470,180 430,280 170,280" to "250,180 350,180 330,280 270,280"
+                const stage2Start = "130,180 470,180 430,280 170,280";
+                const stage2End = "250,180 350,180 330,280 270,280";
+                stage2Poly.setAttribute('points', interpolatePoints(stage2Start, stage2End, progress));
+                
+                // Gap: Shrinks from x=100 width=400 to x=180 width=240
+                const gapX = 100 + (80 * progress);
+                const gapWidth = 400 - (160 * progress);
+                gapRect.setAttribute('x', gapX);
+                gapRect.setAttribute('width', gapWidth);
+                
+                // Gap number opacity and scale
+                const gapOpacity = Math.max(0.5, 1 - (progress * 0.3));
+                gapNumber.setAttribute('opacity', gapOpacity);
+                gapLabel.setAttribute('opacity', gapOpacity);
+                
+                // Optional: fade out stages as gap closes
+                stage1Poly.setAttribute('opacity', Math.max(0.1, 0.2 - (progress * 0.15)));
+                stage2Poly.setAttribute('opacity', Math.max(0.2, 0.4 - (progress * 0.25)));
+            };
+            
+            const interpolatePoints = (startStr, endStr, progress) => {
+                const startPoints = startStr.split(' ').map(p => parseFloat(p));
+                const endPoints = endStr.split(' ').map(p => parseFloat(p));
+                
+                const interpolated = startPoints.map((start, i) => {
+                    const end = endPoints[i];
+                    return start + (end - start) * progress;
+                });
+                
+                return interpolated.map((p, i) => i % 2 === 0 ? p : p).join(' ');
+            };
+            
+            return { init };
+        })();
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', FunnelAnimation.init);
+        } else {
+            FunnelAnimation.init();
         }
     </script>
 </body>
