@@ -393,22 +393,68 @@
             color: var(--color-status-draft-text);
         }
         
-        /* Tag component */
-        .project-meta {
-            display: flex;
-            gap: var(--spacing-xs);
-            margin-bottom: var(--spacing-sm);
-            flex-wrap: wrap;
-        }
-        
-        .tag {
-            font-size: var(--font-size-xs);
-            padding: 0.25rem 0.75rem;
-            background-color: var(--color-bg-interactive);
-            color: var(--color-text-secondary);
-            border-radius: var(--radius-sm);
-            font-weight: var(--font-weight-medium);
-        }
+         /* Tag component */
+         .project-meta {
+             display: flex;
+             gap: var(--spacing-xs);
+             margin-bottom: var(--spacing-sm);
+             flex-wrap: wrap;
+         }
+         
+         .tag {
+             font-size: var(--font-size-xs);
+             padding: 0.25rem 0.75rem;
+             background-color: var(--color-bg-interactive);
+             color: var(--color-text-secondary);
+             border-radius: var(--radius-sm);
+             font-weight: var(--font-weight-medium);
+         }
+
+         /* Indicator cards component */
+         .indicator-cards {
+             display: flex;
+             gap: var(--spacing-md);
+             margin: var(--spacing-xl) 0;
+             flex-wrap: wrap;
+         }
+
+         .indicator-card {
+             flex: 1 1 auto;
+             min-width: 140px;
+             padding: var(--spacing-md);
+             background-color: var(--color-bg-secondary);
+             border: 1px solid var(--color-border-default);
+             border-radius: var(--radius-md);
+             text-align: center;
+         }
+
+         .indicator-card-label {
+             display: block;
+             font-size: var(--font-size-xs);
+             color: var(--color-text-muted);
+             text-transform: uppercase;
+             letter-spacing: 0.05em;
+             font-weight: var(--font-weight-semibold);
+             margin-bottom: 0.5rem;
+         }
+
+         .indicator-card-text {
+             display: block;
+             font-size: var(--font-size-base);
+             color: var(--color-text-primary);
+             font-weight: var(--font-weight-semibold);
+         }
+
+         @media (max-width: 768px) {
+             .indicator-cards {
+                 gap: var(--spacing-sm);
+             }
+
+             .indicator-card {
+                 min-width: 100px;
+                 padding: var(--spacing-sm);
+             }
+         }
         
         /* Project description */
         .project-description {
@@ -434,12 +480,13 @@
             min-width: 0;
         }
         
-        .stat-value {
-            display: block;
-            font-size: var(--font-size-xl);
-            font-weight: var(--font-weight-bold);
-            color: var(--color-text-primary);
-        }
+         .stat-value {
+             display: block;
+             font-size: 1.75rem;
+             font-weight: var(--font-weight-bold);
+             color: var(--color-accent-primary);
+             letter-spacing: -0.01em;
+         }
         
         .stat-label {
             display: block;
@@ -780,6 +827,22 @@
             <section class="intro" aria-labelledby="intro-heading">
                 <h2 id="intro-heading" style="display: none;">Introduction</h2>
                 <p>Strategic product analyses with user research, data-driven insights, and actionable 30/60/90 day roadmaps. Each teardown demonstrates product thinking, execution planning, and user empathy.</p>
+                <p style="margin-top: var(--spacing-md); font-size: var(--font-size-base); color: var(--color-text-secondary); line-height: var(--line-height-relaxed);">These aren't theoretical case studies. Each analysis is grounded in primary research, metrics analysis, and actionable roadmaps built for execution. Written from a Product Manager's perspective: real data, real constraints, real recommendations.</p>
+                
+                <div class="indicator-cards">
+                    <div class="indicator-card">
+                        <span class="indicator-card-label">Analysis Type</span>
+                        <span class="indicator-card-text">Data-Driven</span>
+                    </div>
+                    <div class="indicator-card">
+                        <span class="indicator-card-label">Research Method</span>
+                        <span class="indicator-card-text">Primary + Metrics</span>
+                    </div>
+                    <div class="indicator-card">
+                        <span class="indicator-card-label">Deliverables</span>
+                        <span class="indicator-card-text">Strategy & Roadmap</span>
+                    </div>
+                </div>
             </section>
             
             <section class="projects" aria-labelledby="projects-heading">
@@ -818,12 +881,13 @@
                         </div>
                         
                         <div class="project-links">
-                            <a href="projects/pair-chat/presentation.html" class="btn btn-primary">View Presentation</a>
-                        </div>
+                             <a href="projects/pair-chat/presentation.html" class="btn btn-primary">View Presentation</a>
+                             <a href="projects/pair-chat/teardown.md" class="btn btn-secondary">Read Analysis</a>
+                         </div>
                     </article>
                     
                      <!-- RedeemSG: Trust Crisis Project -->
-                     <article class="project-card" style="display: none;">
+                      <article class="project-card">
                         <div class="project-header">
                             <h2>RedeemSG: Trust Crisis</h2>
                             <span class="project-status status-complete">Complete</span>
@@ -859,28 +923,7 @@
                         </div>
                     </article>
                     
-                     <!-- Pair Search Project -->
-                     <article class="project-card" style="display: none;">
-                        <div class="project-header">
-                            <h2>Pair Search</h2>
-                            <span class="project-status status-complete">Complete</span>
-                        </div>
-                        
-                        <div class="project-meta">
-                            <span class="tag">Gov Tech</span>
-                            <span class="tag">Search</span>
-                            <span class="tag">Singapore</span>
-                        </div>
-                        
-                        <p class="project-description">
-                            Legislative research tool for Singapore government officers. Analysis of search patterns, user needs, and opportunities for improvement.
-                        </p>
-                        
-                        <div class="project-links">
-                        </div>
-                    </article>
-
-                    <!-- GovTech Equivalents Comparative -->
+                     <!-- GovTech Equivalents Comparative -->
                     <article class="project-card">
                         <div class="project-header">
                             <h2>GovTech Equivalents</h2>
@@ -912,16 +955,43 @@
                             </div>
                         </div>
 
-                        <div class="project-links">
-                            <a href="projects/govtech-comparatives/presentation.html" class="btn btn-primary">View Presentation</a>
+                         <div class="project-links">
+                             <a href="projects/govtech-comparatives/presentation.html" class="btn btn-primary">View Presentation</a>
+                             <a href="projects/govtech-comparatives/presentation.html" class="btn btn-secondary">Read Analysis</a>
+                         </div>
+                     </article>
+
+                </div>
+            </section>
+
+            <!-- Coming Soon Section -->
+            <section style="margin-top: var(--spacing-xl); padding-top: var(--spacing-xl); border-top: 2px solid var(--color-border-default);">
+                <h3 style="margin-bottom: var(--spacing-md); color: var(--color-text-primary);">Coming Soon</h3>
+                <p style="color: var(--color-text-muted); margin-bottom: var(--spacing-lg);">More analyses in progress:</p>
+                <div class="projects-grid">
+                    <!-- Pair Search Project -->
+                    <article class="project-card" style="opacity: 0.6;">
+                        <div class="project-header">
+                            <h2>Pair Search</h2>
+                            <span class="project-status status-draft">Draft</span>
                         </div>
+                        
+                        <div class="project-meta">
+                            <span class="tag">Gov Tech</span>
+                            <span class="tag">Search</span>
+                            <span class="tag">Singapore</span>
+                        </div>
+                        
+                        <p class="project-description">
+                            Legislative research tool for Singapore government officers. Analysis of search patterns, user needs, and opportunities for improvement.
+                        </p>
                     </article>
-                    
-                     <!-- RedeemSG Voucher Quick Access -->
-                     <article class="project-card" style="display: none;">
+
+                    <!-- RedeemSG Voucher Quick Access -->
+                    <article class="project-card" style="opacity: 0.6;">
                         <div class="project-header">
                             <h2>RedeemSG: Voucher Quick Access</h2>
-                            <span class="project-status status-complete">Complete</span>
+                            <span class="project-status status-draft">Draft</span>
                         </div>
                         
                         <div class="project-meta">
@@ -933,23 +1003,19 @@
                         <p class="project-description">
                             One-page PM pitch for improving voucher redemption UX. Strategic analysis of user friction points and proposed solutions.
                         </p>
-                        
-                        <div class="project-links">
-                        </div>
                     </article>
                 </div>
             </section>
         </main>
         
         <footer role="contentinfo">
-            <div class="footer-content">
-                <p>&copy; 2026 Mandl Cho. All teardowns and analyses.</p>
-                <nav class="footer-links" aria-label="Footer navigation">
-                    <a href="README.md">About</a>
-                    <a href="tracker.md">Tracker</a>
-                    <a href="https://github.com/mandlcho/product-case-studies" target="_blank" rel="noopener noreferrer">Source</a>
-                </nav>
-            </div>
+             <div class="footer-content">
+                 <p>&copy; 2026 Mandl Cho. All teardowns and analyses.</p>
+                 <nav class="footer-links" aria-label="Footer navigation">
+                     <a href="https://github.com/mandlcho/product-case-studies" target="_blank" rel="noopener noreferrer">Source</a>
+                     <a href="https://linkedin.com/in/mandlcho" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                 </nav>
+             </div>
         </footer>
     </div>
     
